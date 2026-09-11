@@ -19,4 +19,14 @@ describe("font loading", () => {
   it("includes the Vietnamese unicode-range on Inter", () => {
     expect(fontsCss).toMatch(/U\+1EA0-1EF9/);
   });
+
+  it("loads Inter 500 and Pixelify Sans 600 with swap and fallbacks", () => {
+    expect(fontsCss).toMatch(/font-weight:\s*500/);
+    expect(fontsCss).toMatch(/inter-latin-500-normal\.woff2/);
+    expect(fontsCss).toMatch(/inter-vietnamese-500-normal\.woff2/);
+    expect(fontsCss).toMatch(/font-weight:\s*600/);
+    expect(fontsCss).toMatch(/pixelify-sans-latin-600-normal\.woff2/);
+    expect(fontsCss).toMatch(/font-display:\s*swap/);
+    expect(fontsCss).toMatch(/size-adjust:/);
+  });
 });

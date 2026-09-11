@@ -1,4 +1,5 @@
 import Dexie, { type Table } from "dexie";
+import type { Occurrence, StatusHistoryEvent, Task } from "../domain/types";
 
 export type ScaffoldRecord = {
   id: string;
@@ -19,11 +20,11 @@ export const WORKIE_TABLES = [
 ] as const;
 
 export class WorkieDB extends Dexie {
-  tasks!: Table<ScaffoldRecord, string>;
-  occurrences!: Table<ScaffoldRecord, string>;
+  tasks!: Table<Task, string>;
+  occurrences!: Table<Occurrence, string>;
   blocks!: Table<ScaffoldRecord, string>;
   planningDrafts!: Table<ScaffoldRecord, string>;
-  statusHistory!: Table<ScaffoldRecord, string>;
+  statusHistory!: Table<StatusHistoryEvent, string>;
   pomodoroCycles!: Table<ScaffoldRecord, string>;
   sessions!: Table<ScaffoldRecord, string>;
   segments!: Table<ScaffoldRecord, string>;
@@ -40,6 +41,19 @@ export class WorkieDB extends Dexie {
       blocks: "id, createdAt, updatedAt",
       planningDrafts: "id, createdAt, updatedAt",
       statusHistory: "id, createdAt, updatedAt",
+      pomodoroCycles: "id, createdAt, updatedAt",
+      sessions: "id, createdAt, updatedAt",
+      segments: "id, createdAt, updatedAt",
+      importReviewDrafts: "id, createdAt, updatedAt",
+    });
+    this.version(3).stores({
+      tasks: "id, status, createdAt, updatedAt, *blockIds",
+      occurrences:
+        "id, taskId, date, [taskId+date], status, createdAt, updatedAt, *blockIds",
+      blocks: "id, createdAt, updatedAt",
+      planningDrafts: "id, createdAt, updatedAt",
+      statusHistory:
+        "id, entityId, entityKind, status, workieDay, [entityId+status+workieDay], createdAt, updatedAt",
       pomodoroCycles: "id, createdAt, updatedAt",
       sessions: "id, createdAt, updatedAt",
       segments: "id, createdAt, updatedAt",

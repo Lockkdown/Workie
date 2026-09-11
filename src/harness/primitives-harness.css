@@ -1,0 +1,32 @@
+.primitives-harness {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-32);
+  padding: var(--space-structure-24);
+  padding-top: 0;
+}
+
+.primitives-harness > h2 {
+  margin: 0;
+}
+
+.primitives-theme-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-16);
+  padding: var(--space-structure-24);
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 0 var(--border-2) var(--color-border-strong);
+}
+
+.primitives-theme-board > h3,
+.primitives-theme-board > p {
+  margin: 0;
+}
+
+.primitives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-content-12);
+}

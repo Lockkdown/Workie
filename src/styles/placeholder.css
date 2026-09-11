@@ -1,27 +1,29 @@
 :root {
-  color: #ede9f5;
-  background: #16121f;
+  color: var(--color-text-primary);
+  background: var(--color-surface-base);
 }
 
 body {
   margin: 0;
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+main {
+  padding: var(--space-structure-24);
 }
 
 .display {
-  font-family: "Pixelify Sans", "Pixelify Sans Fallback", sans-serif;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 36px;
+  font-family: var(--type-display-xl-family);
+  font-weight: var(--type-display-xl-weight);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-line);
 }
 
 .body {
-  font-family: Inter, "Inter Fallback", system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-button:focus-visible {
-  outline: 2px solid #ede9f5;
-  outline-offset: 2px;
+  font-family: var(--type-body-l-family);
+  font-weight: var(--type-body-l-weight);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-line);
 }

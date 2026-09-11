@@ -1,0 +1,375 @@
+.ui-ornament {
+  --_chamfer: var(--chamfer-dense);
+  --_border-w: var(--border-dense);
+  --_surface: var(--color-surface-raised);
+  --_border: var(--color-border-quiet);
+  --_pad: var(--space-content-8);
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  box-shadow: var(--elevation-offset) var(--color-border-strong);
+}
+
+.ui-ornament[data-ornament="dense"] {
+  --_chamfer: var(--chamfer-4);
+  --_border-w: var(--border-1);
+  --_border: var(--color-border-quiet);
+  --_pad: var(--space-content-8);
+}
+
+.ui-ornament[data-ornament="panel"] {
+  --_chamfer: var(--chamfer-8);
+  --_border-w: var(--border-2);
+  --_surface: var(--color-surface-panel);
+  --_border: var(--color-border-strong);
+  --_pad: var(--space-structure-16);
+}
+
+.ui-ornament[data-ornament="shell"] {
+  --_chamfer: var(--chamfer-12);
+  --_border-w: var(--border-3);
+  --_surface: var(--color-surface-panel);
+  --_border: var(--color-border-strong);
+  --_pad: var(--space-structure-24);
+}
+
+.ui-ornament::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--_surface);
+  box-shadow: 0 0 0 var(--_border-w) var(--_border);
+  clip-path: polygon(
+    var(--_chamfer) 0,
+    calc(100% - var(--_chamfer)) 0,
+    100% var(--_chamfer),
+    100% calc(100% - var(--_chamfer)),
+    calc(100% - var(--_chamfer)) 100%,
+    var(--_chamfer) 100%,
+    0 calc(100% - var(--_chamfer)),
+    0 var(--_chamfer)
+  );
+}
+
+.ui-ornament-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--_pad);
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-line);
+  font-weight: var(--type-body-m-weight);
+  cursor: pointer;
+  transition:
+    color var(--duration-micro) var(--easing-move),
+    opacity var(--duration-opacity) var(--easing-move);
+}
+
+.ui-button[data-size="primary"] {
+  min-width: var(--target-primary);
+  min-height: var(--target-primary);
+}
+
+.ui-button[data-size="compact"] {
+  min-width: var(--target-compact);
+  min-height: var(--target-compact);
+}
+
+.ui-compact-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-structure-24);
+}
+
+.ui-button[data-variant="primary"] {
+  --_surface: var(--color-brand-coral);
+  --_border: var(--color-brand-coral);
+  color: var(--color-surface-base);
+}
+
+.ui-button[data-variant="secondary"] {
+  --_surface: var(--color-surface-raised);
+  --_border: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+.ui-button[data-variant="destructive"] {
+  --_surface: var(--color-surface-raised);
+  --_border: var(--color-status-conflict);
+  color: var(--color-text-primary);
+}
+
+.ui-button:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.ui-status-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-content-4);
+  color: var(--color-status);
+}
+
+.ui-status-mark[data-status="waiting"] {
+  --color-status: var(--color-status-waiting);
+}
+
+.ui-status-mark[data-status="in-progress"] {
+  --color-status: var(--color-status-in-progress);
+}
+
+.ui-status-mark[data-status="deferred"] {
+  --color-status: var(--color-status-deferred);
+}
+
+.ui-status-mark[data-status="completed"] {
+  --color-status: var(--color-status-completed);
+}
+
+.ui-status-mark[data-status="abandoned"] {
+  --color-status: var(--color-status-abandoned);
+}
+
+.ui-status-mark[data-status="cancelled"] {
+  --color-status: var(--color-status-cancelled);
+}
+
+.ui-status-mark[data-status="conflict"] {
+  --color-status: var(--color-status-conflict);
+}
+
+.ui-status-label {
+  color: var(--color-text-primary);
+}
+
+.ui-accent-strip {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 4px;
+  align-self: stretch;
+  width: 4px;
+  background: var(--color-status);
+  pointer-events: none;
+}
+
+.ui-task-card,
+.ui-time-block {
+  display: flex;
+  align-items: stretch;
+  color: var(--color-text-primary);
+}
+
+.ui-task-card[data-status="waiting"],
+.ui-progress-fill[data-status="waiting"] {
+  --color-status: var(--color-status-waiting);
+}
+
+.ui-task-card[data-status="in-progress"],
+.ui-progress-fill[data-status="in-progress"] {
+  --color-status: var(--color-status-in-progress);
+}
+
+.ui-task-card[data-status="deferred"],
+.ui-progress-fill[data-status="deferred"] {
+  --color-status: var(--color-status-deferred);
+}
+
+.ui-task-card[data-status="completed"],
+.ui-progress-fill[data-status="completed"] {
+  --color-status: var(--color-status-completed);
+}
+
+.ui-task-card[data-status="abandoned"],
+.ui-progress-fill[data-status="abandoned"] {
+  --color-status: var(--color-status-abandoned);
+}
+
+.ui-task-card[data-status="cancelled"],
+.ui-progress-fill[data-status="cancelled"] {
+  --color-status: var(--color-status-cancelled);
+}
+
+.ui-task-card-body,
+.ui-time-block-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-content-4);
+  min-width: 0;
+}
+
+.ui-task-card-title,
+.ui-time-block-title {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.ui-task-card-meta,
+.ui-time-block-meta,
+.ui-progress-status-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-content-8);
+}
+
+.ui-block-type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-content-4);
+  color: var(--color-text-secondary);
+}
+
+.ui-time-block[data-block-type="fixed"] {
+  --_border: var(--color-border-strong);
+}
+
+.ui-time-block[data-block-type="flexible"] {
+  --_border: transparent;
+}
+
+.ui-time-block[data-block-type="flexible"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--color-border-strong) 0 4px,
+      transparent 4px 8px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      var(--color-border-strong) 0 4px,
+      transparent 4px 8px
+    );
+  clip-path: polygon(
+    var(--_chamfer) 0,
+    calc(100% - var(--_chamfer)) 0,
+    100% var(--_chamfer),
+    100% calc(100% - var(--_chamfer)),
+    calc(100% - var(--_chamfer)) 100%,
+    var(--_chamfer) 100%,
+    0 calc(100% - var(--_chamfer)),
+    0 var(--_chamfer)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+}
+
+.ui-conflict-pattern {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 8px;
+  width: 8px;
+  align-self: stretch;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-status-conflict) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+.ui-panel h2 {
+  margin: 0 0 var(--space-content-8);
+  color: var(--color-text-primary);
+}
+
+.ui-panel-body {
+  color: var(--color-text-primary);
+}
+
+.ui-progress-status {
+  color: var(--color-text-primary);
+}
+
+.ui-progress {
+  margin-top: var(--space-content-8);
+  height: 8px;
+  background: var(--color-surface-panel);
+  overflow: visible;
+}
+
+.ui-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-status);
+}
+
+.ui-contribution-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  color: var(--color-text-primary);
+}
+
+.ui-contribution-legend > p {
+  margin: 0;
+}
+
+.ui-contribution-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-12);
+}
+
+.ui-contribution {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-content-4);
+}
+
+.ui-contribution-swatch {
+  width: 16px;
+  height: 16px;
+  background: var(--_swatch);
+  box-shadow: 0 0 0 var(--border-1) var(--color-border-quiet);
+}
+
+.ui-contribution[data-level="0"] {
+  --_swatch: var(--color-contribution-0);
+}
+
+.ui-contribution[data-level="1"] {
+  --_swatch: var(--color-contribution-1);
+}
+
+.ui-contribution[data-level="2"] {
+  --_swatch: var(--color-contribution-2);
+}
+
+.ui-contribution[data-level="3"] {
+  --_swatch: var(--color-contribution-3);
+}
+
+.ui-contribution[data-level="4plus"] {
+  --_swatch: var(--color-contribution-4plus);
+}
+
+.ui-ritual {
+  animation-duration: var(--duration-ritual);
+  animation-timing-function: var(--easing-pixel);
+}

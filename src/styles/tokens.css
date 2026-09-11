@@ -1,0 +1,231 @@
+/* Dark is the source of truth; light is authored separately, never inverted [D75][D76]. */
+
+:root {
+  --font-display: "Pixelify Sans", "Pixelify Sans Fallback", sans-serif;
+  --font-body: Inter, "Inter Fallback", system-ui, sans-serif;
+
+  --type-display-xl-family: var(--font-display);
+  --type-display-xl-size: 32px;
+  --type-display-xl-line: 36px;
+  --type-display-xl-weight: 700;
+
+  --type-display-l-family: var(--font-display);
+  --type-display-l-size: 24px;
+  --type-display-l-line: 28px;
+  --type-display-l-weight: 600;
+
+  --type-display-m-family: var(--font-display);
+  --type-display-m-size: 16px;
+  --type-display-m-line: 20px;
+  --type-display-m-weight: 600;
+
+  --type-timer-family: var(--font-display);
+  --type-timer-size: 48px;
+  --type-timer-line: 48px;
+  --type-timer-weight: 700;
+  --type-timer-numeric: tabular-nums;
+
+  --type-body-l-family: var(--font-body);
+  --type-body-l-size: 16px;
+  --type-body-l-line: 24px;
+  --type-body-l-weight: 400;
+
+  --type-body-m-family: var(--font-body);
+  --type-body-m-size: 14px;
+  --type-body-m-line: 20px;
+  --type-body-m-weight: 400;
+
+  --type-body-s-family: var(--font-body);
+  --type-body-s-size: 12px;
+  --type-body-s-line: 16px;
+  --type-body-s-weight: 500;
+
+  --type-numeric-family: var(--font-body);
+  --type-numeric-weight: 400;
+  --type-numeric-variant: tabular-nums;
+
+  --space-content-4: 4px;
+  --space-content-8: 8px;
+  --space-content-12: 12px;
+  --space-structure-16: 16px;
+  --space-structure-24: 24px;
+  --space-structure-32: 32px;
+  --space-structure-48: 48px;
+
+  --chamfer-4: 4px;
+  --chamfer-8: 8px;
+  --chamfer-12: 12px;
+  --border-1: 1px;
+  --border-2: 2px;
+  --border-3: 3px;
+  --chamfer-dense: var(--chamfer-4);
+  --chamfer-panel: var(--chamfer-8);
+  --chamfer-shell: var(--chamfer-12);
+  --border-dense: var(--border-1);
+  --border-panel: var(--border-2);
+  --border-shell: var(--border-3);
+  --elevation-offset: 0 2px 0;
+
+  --duration-micro: 120ms;
+  --duration-move: 180ms;
+  --duration-panel: 240ms;
+  --duration-ritual: 600ms;
+  --duration-opacity: 120ms;
+  --easing-pixel: steps(4, end);
+  --easing-move: ease-out;
+
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 2px;
+  --target-primary: 44px;
+  --target-compact: 24px;
+  --target-compact-spacing: 24px;
+}
+
+:root,
+[data-theme="dark"] {
+  --color-surface-base: #16121f;
+  --color-surface-raised: #1f1a2b;
+  --color-surface-panel: #2a2338;
+  --color-border-quiet: #3d3450;
+  --color-border-strong: #5a4e74;
+  --color-text-primary: #ede9f5;
+  --color-text-secondary: #a79fbd;
+  --color-brand-coral: #ff6b8a;
+  --color-brand-mint: #5ee6c0;
+  --color-status-waiting: #9a93ae;
+  --color-status-in-progress: #5aa9ff;
+  --color-status-deferred: #f0b429;
+  --color-status-completed: #4ade80;
+  --color-status-abandoned: #ff7a4d;
+  --color-status-cancelled: #6b7280;
+  --color-status-conflict: #ff4d4f;
+  --color-contribution-0: #221c2e;
+  --color-contribution-1: #1f5b4c;
+  --color-contribution-2: #2a8a70;
+  --color-contribution-3: #3fb894;
+  --color-contribution-4plus: #5ee6c0;
+  --color-focus: var(--color-text-primary);
+}
+
+[data-theme="light"] {
+  --color-surface-base: #f7f4fb;
+  --color-surface-raised: #ffffff;
+  --color-surface-panel: #efe9f6;
+  --color-border-quiet: #d5cce4;
+  --color-border-strong: #b3a5c9;
+  --color-text-primary: #1c1726;
+  --color-text-secondary: #574e6b;
+  --color-brand-coral: #d93a63;
+  --color-brand-mint: #0e8f73;
+  --color-status-waiting: #6b6480;
+  --color-status-in-progress: #1d6fd1;
+  --color-status-deferred: #a66a00;
+  --color-status-completed: #147d46;
+  --color-status-abandoned: #c2410c;
+  --color-status-cancelled: #5b6472;
+  --color-status-conflict: #c62828;
+  --color-contribution-0: #e7e1f0;
+  --color-contribution-1: #b8e8d8;
+  --color-contribution-2: #7dd2b8;
+  --color-contribution-3: #3da98a;
+  --color-contribution-4plus: #0e8f73;
+  --color-focus: var(--color-text-primary);
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    --color-surface-base: #f7f4fb;
+    --color-surface-raised: #ffffff;
+    --color-surface-panel: #efe9f6;
+    --color-border-quiet: #d5cce4;
+    --color-border-strong: #b3a5c9;
+    --color-text-primary: #1c1726;
+    --color-text-secondary: #574e6b;
+    --color-brand-coral: #d93a63;
+    --color-brand-mint: #0e8f73;
+    --color-status-waiting: #6b6480;
+    --color-status-in-progress: #1d6fd1;
+    --color-status-deferred: #a66a00;
+    --color-status-completed: #147d46;
+    --color-status-abandoned: #c2410c;
+    --color-status-cancelled: #5b6472;
+    --color-status-conflict: #c62828;
+    --color-contribution-0: #e7e1f0;
+    --color-contribution-1: #b8e8d8;
+    --color-contribution-2: #7dd2b8;
+    --color-contribution-3: #3da98a;
+    --color-contribution-4plus: #0e8f73;
+    --color-focus: var(--color-text-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-micro: 0ms;
+    --duration-move: 0ms;
+    --duration-panel: 0ms;
+    --duration-ritual: 0ms;
+    --duration-opacity: 120ms;
+  }
+}
+
+.type-display-xl {
+  font-family: var(--type-display-xl-family);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-line);
+  font-weight: var(--type-display-xl-weight);
+}
+
+.type-display-l {
+  font-family: var(--type-display-l-family);
+  font-size: var(--type-display-l-size);
+  line-height: var(--type-display-l-line);
+  font-weight: var(--type-display-l-weight);
+}
+
+.type-display-m {
+  font-family: var(--type-display-m-family);
+  font-size: var(--type-display-m-size);
+  line-height: var(--type-display-m-line);
+  font-weight: var(--type-display-m-weight);
+}
+
+.type-timer {
+  font-family: var(--type-timer-family);
+  font-size: var(--type-timer-size);
+  line-height: var(--type-timer-line);
+  font-weight: var(--type-timer-weight);
+  font-variant-numeric: var(--type-timer-numeric);
+}
+
+.type-body-l {
+  font-family: var(--type-body-l-family);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-line);
+  font-weight: var(--type-body-l-weight);
+}
+
+.type-body-m {
+  font-family: var(--type-body-m-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-line);
+  font-weight: var(--type-body-m-weight);
+}
+
+.type-body-s {
+  font-family: var(--type-body-s-family);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-line);
+  font-weight: var(--type-body-s-weight);
+}
+
+.type-numeric {
+  font-family: var(--type-numeric-family);
+  font-weight: var(--type-numeric-weight);
+  font-variant-numeric: var(--type-numeric-variant);
+}
+
+:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
+}
