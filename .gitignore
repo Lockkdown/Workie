@@ -1,9 +1,11 @@
-# Ignore everything
-*
-
-# Keep this file so the rule is versioned
-!.gitignore
-
-# Keep src and all its contents
-!src/
-!src/**
+node_modules
+dist
+test-results
+playwright-report
+blob-report
+playwright/.cache
+coverage
+*.local
+.DS_Store
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo
