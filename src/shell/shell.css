@@ -1,0 +1,238 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+}
+
+html {
+  color: var(--color-text-primary);
+  background: var(--color-surface-base);
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  min-width: 0;
+  max-width: 100%;
+  gap: var(--space-structure-16);
+  padding: var(--space-structure-16);
+}
+
+.app-chrome {
+  min-width: 0;
+}
+
+.app-chrome-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-16);
+  min-width: 0;
+}
+
+.app-chrome h1 {
+  margin: 0;
+}
+
+.app-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-content-8);
+}
+
+.app-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: var(--space-content-8) var(--space-content-12);
+  min-height: var(--target-primary);
+  border: 0;
+  border-left: var(--border-3) solid transparent;
+  background: transparent;
+  color: var(--color-text-primary);
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.app-nav-item[aria-current="page"] {
+  border-left-color: var(--color-brand-mint);
+  background: var(--color-surface-raised);
+}
+
+.theme-setting {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+.theme-setting legend {
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+.theme-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-8);
+}
+
+.theme-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-content-8);
+  min-height: var(--target-primary);
+  min-width: var(--target-primary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.daily-desk,
+.plan-tomorrow,
+.reports-surface {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-24);
+  min-width: 0;
+}
+
+.daily-desk-header h2,
+.daily-desk-header p {
+  margin: 0;
+}
+
+.desk-modes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-content-8);
+}
+
+.desk-mode {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: var(--space-content-8);
+  min-height: var(--target-primary);
+  min-width: var(--target-primary);
+  border: var(--border-1) solid var(--color-border-quiet);
+  background: var(--color-surface-raised);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.desk-mode[aria-checked="true"] {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--elevation-offset) var(--color-border-strong);
+}
+
+.desk-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-24);
+  min-width: 0;
+}
+
+.desk-zone {
+  min-width: 0;
+}
+
+.desk-zone-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-content-8);
+}
+
+.desk-zone h3,
+.desk-zone p,
+.daily-desk-header h2,
+.daily-desk-header p {
+  margin: 0;
+}
+
+.desk-zone[data-collapsed="true"] .desk-zone-body {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .desk-workspace[data-mode="Tasks"] .desk-zone:not([data-zone="tray"]),
+  .desk-workspace[data-mode="Day"] .desk-zone:not([data-zone="timeline"]),
+  .desk-workspace[data-mode="Now"] .desk-zone:not([data-zone="now"]) {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-shell {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .app-chrome {
+    flex: 0 1 12rem;
+    max-width: 14rem;
+  }
+
+  .app-main {
+    flex: 1 1 auto;
+  }
+
+  .desk-modes {
+    display: none;
+  }
+
+  .desk-workspace {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .desk-zone[data-zone="tray"] {
+    flex: 0 1 12rem;
+    min-width: 8rem;
+  }
+
+  .desk-zone[data-zone="tray"][data-collapsed="true"] {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 12rem;
+  }
+
+  .desk-zone[data-zone="timeline"] {
+    flex: 1 1 24rem;
+    min-width: 16rem;
+  }
+
+  .desk-zone[data-zone="now"] {
+    flex: 0 1 12rem;
+    min-width: 8rem;
+  }
+}

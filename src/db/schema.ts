@@ -7,6 +7,13 @@ export type ScaffoldRecord = {
   updatedAt: number;
 };
 
+export type SettingRecord = {
+  id: string;
+  value: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
 export const WORKIE_TABLES = [
   "tasks",
   "occurrences",
@@ -29,6 +36,7 @@ export class WorkieDB extends Dexie {
   sessions!: Table<ScaffoldRecord, string>;
   segments!: Table<ScaffoldRecord, string>;
   importReviewDrafts!: Table<ScaffoldRecord, string>;
+  settings!: Table<SettingRecord, string>;
 
   constructor(name = "workie") {
     super(name);
@@ -58,6 +66,9 @@ export class WorkieDB extends Dexie {
       sessions: "id, createdAt, updatedAt",
       segments: "id, createdAt, updatedAt",
       importReviewDrafts: "id, createdAt, updatedAt",
+    });
+    this.version(4).stores({
+      settings: "id, createdAt, updatedAt",
     });
   }
 }
