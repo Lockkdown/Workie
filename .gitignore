@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# Keep this file so the rule is versioned
+!.gitignore
+
+# Keep src and all its contents
+!src/
+!src/**
