@@ -141,6 +141,8 @@ describe("system-state reference set [D23] [D37] [D63] [D91]", () => {
     expect(failedImport).toContain(IMPORT_COPY.reviewTitle);
 
     const nowRail = source("pomodoro/NowRail.tsx");
+    expect(nowRail).toContain('unfinished.state === "awaiting task selection"');
+    expect(nowRail).toContain('data-testid="now-task"');
     expect(nowRail).toContain("COPY.awaitingReconciliation");
     expect(nowRail).toContain("COPY.countFocus");
     expect(nowRail).toContain("COPY.countPause");

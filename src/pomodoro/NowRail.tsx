@@ -396,43 +396,47 @@ export function NowRail({
               <div className="timeline-empty-motif" aria-hidden="true" />
               <p className="type-body-m">{COPY.emptyStep}</p>
             </div>
-          ) : (
-            <>
-              <label className="type-body-s">
-                {COPY.task}
-                <select
-                  id="now-task"
-                  data-testid="now-task"
-                  value={taskId}
-                  onChange={(event) => {
-                    setTaskId(event.target.value);
-                    setBlockId("");
-                  }}
-                >
-                  <option value=""> </option>
-                  {live.map((task) => (
-                    <option key={task.id} value={task.id}>
-                      {task.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="type-body-s">
-                {COPY.block}
-                <select
-                  value={blockId}
-                  onChange={(event) => setBlockId(event.target.value)}
-                >
-                  <option value="">{COPY.unscheduled}</option>
-                  {taskBlocks.map((block) => (
-                    <option key={block.id} value={block.id}>
-                      {block.id}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </>
-          )}
+          ) : null}
+        </>
+      ) : null}
+      {loadState === "ready" &&
+      live.length > 0 &&
+      (unfinished === undefined ||
+        unfinished.state === "awaiting task selection") ? (
+        <>
+          <label className="type-body-s">
+            {COPY.task}
+            <select
+              id="now-task"
+              data-testid="now-task"
+              value={taskId}
+              onChange={(event) => {
+                setTaskId(event.target.value);
+                setBlockId("");
+              }}
+            >
+              <option value=""> </option>
+              {live.map((task) => (
+                <option key={task.id} value={task.id}>
+                  {task.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="type-body-s">
+            {COPY.block}
+            <select
+              value={blockId}
+              onChange={(event) => setBlockId(event.target.value)}
+            >
+              <option value="">{COPY.unscheduled}</option>
+              {taskBlocks.map((block) => (
+                <option key={block.id} value={block.id}>
+                  {block.id}
+                </option>
+              ))}
+            </select>
+          </label>
         </>
       ) : null}
       {unfinished ? (
