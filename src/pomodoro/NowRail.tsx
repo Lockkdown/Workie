@@ -334,9 +334,7 @@ export function NowRail({
         ? {
             label: COPY.resume,
             onClick: () =>
-              void save(
-                resumePaused(unfinished, Date.now(), newId()),
-              ),
+              void save(resumePaused(unfinished, Date.now(), newId())),
           }
         : unfinished?.state === "running"
           ? {
@@ -468,12 +466,7 @@ export function NowRail({
                   size="primary"
                   onClick={() =>
                     void save(
-                      reconcile(
-                        unfinished,
-                        "focus",
-                        Date.now(),
-                        newId(),
-                      ).cycle,
+                      reconcile(unfinished, "focus", Date.now(), newId()).cycle,
                     )
                   }
                 >
@@ -485,12 +478,7 @@ export function NowRail({
                   size="primary"
                   onClick={() =>
                     void save(
-                      reconcile(
-                        unfinished,
-                        "pause",
-                        Date.now(),
-                        newId(),
-                      ).cycle,
+                      reconcile(unfinished, "pause", Date.now(), newId()).cycle,
                     )
                   }
                 >

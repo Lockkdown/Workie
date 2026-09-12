@@ -10,14 +10,17 @@ describe("newId", () => {
   });
 
   it("returns a valid v4 UUID when crypto.randomUUID is absent", () => {
-    const getRandomValues = crypto.getRandomValues.bind(crypto);
-    const spy = vi.fn((buffer: Uint8Array) => getRandomValues(buffer));
+    const spy = vi.fn((buffer: Uint8Array) => {
+      buffer.fill(0xab);
+      return buffer;
+    });
     vi.stubGlobal("crypto", { getRandomValues: spy });
 
     expect(crypto["randomUUID"]).toBeUndefined();
     const id = newId();
 
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(id).toBe("abababab-abab-4bab-abab-abababababab");
     expect(id).toMatch(UUID_V4);
     expect(id[14]).toBe("4");
     expect(id[19]).toMatch(/[89ab]/);
@@ -28,7 +31,7 @@ describe("newId", () => {
     const randomUUID = vi.fn(() => expected);
     vi.stubGlobal("crypto", {
       randomUUID,
-      getRandomValues: crypto.getRandomValues.bind(crypto),
+      getRandomValues: (buffer: Uint8Array) => buffer,
     });
 
     expect(newId()).toBe(expected);
