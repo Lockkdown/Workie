@@ -46,8 +46,10 @@ import {
 import { ReserveChrome } from "./ReserveChrome";
 import {
   type ScheduleDraft,
+  chainTargets,
   previewConvert,
   previewMoveBlock,
+  previewMoveToChain,
   previewReorder,
   previewResize,
   previewUnschedule,
@@ -112,6 +114,7 @@ export function TimelineSurface({
   const [moveHour, setMoveHour] = useState(9);
   const [moveMinute, setMoveMinute] = useState(0);
   const [resizeMinutes, setResizeMinutes] = useState(30);
+  const [chainTarget, setChainTarget] = useState("");
   const packed = packDay(plan);
   const conflictIds = new Set(
     conflictInfos(packed).flatMap((item) => item.affectedBlockIds),
@@ -213,7 +216,12 @@ export function TimelineSurface({
   return (
     <div className="timeline-surface">
       {offline ? (
-        <div className="timeline-banner ui-ornament" data-ornament="dense">
+        <div
+          className="timeline-banner ui-ornament"
+          data-ornament="dense"
+          role="status"
+          data-offline="true"
+        >
           <div className="ui-ornament-content">
             <OfflineIcon />
             <span className="type-body-m">{COPY.offline}</span>
@@ -384,7 +392,7 @@ export function TimelineSurface({
                   type="button"
                   className="timeline-edge"
                   data-edge="start"
-                  aria-label={COPY.resize}
+                  aria-label={COPY.resizeStart}
                   onPointerUp={(event) =>
                     handleEdgePointerUp(event, block, "start")
                   }
@@ -393,7 +401,7 @@ export function TimelineSurface({
                   type="button"
                   className="timeline-edge"
                   data-edge="end"
-                  aria-label={COPY.resize}
+                  aria-label={COPY.resizeEnd}
                   onPointerUp={(event) =>
                     handleEdgePointerUp(event, block, "end")
                   }
@@ -491,6 +499,39 @@ export function TimelineSurface({
                 {COPY.moveLater}
               </Button>
               <span className="type-body-s">{COPY.reorderInChain}</span>
+              <label className="timeline-field type-body-s">
+                {COPY.moveToChain}
+                <select
+                  aria-label={COPY.moveToChain}
+                  value={chainTarget}
+                  onChange={(event) => setChainTarget(event.target.value)}
+                >
+                  {chainTargets(plan).map((target) => (
+                    <option
+                      key={target.id === "" ? "day-start" : target.id}
+                      value={target.id}
+                    >
+                      {target.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <Button
+                type="button"
+                variant="secondary"
+                size="primary"
+                onClick={() =>
+                  onPropose(
+                    previewMoveToChain(
+                      plan,
+                      selected.id,
+                      chainTarget === "" ? null : chainTarget,
+                    ),
+                  )
+                }
+              >
+                {COPY.moveToChain}
+              </Button>
             </>
           ) : null}
           {selected.type === "fixed" ? (

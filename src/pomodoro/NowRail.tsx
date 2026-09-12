@@ -11,6 +11,7 @@ import { isLiveStatus } from "../domain/types";
 import { remainingMs } from "../domain/remainingTime";
 import { Button } from "../ui/Button";
 import { appDb } from "../shell/appDb";
+import { OfflineIcon } from "../timeline/icons";
 import {
   notifyBestEffort,
   playCueBestEffort,
@@ -362,8 +363,14 @@ export function NowRail({
   return (
     <div className="now-rail" data-now-rail="true">
       {offline || !online ? (
-        <div className="now-banner ui-ornament" data-ornament="dense">
+        <div
+          className="now-banner ui-ornament"
+          data-ornament="dense"
+          role="status"
+          data-offline="true"
+        >
           <div className="ui-ornament-content">
+            <OfflineIcon />
             <p className="type-body-m">{COPY.offline}</p>
             <p className="type-body-s">{saveLabel}</p>
           </div>
@@ -639,6 +646,14 @@ export function NowRail({
         />{" "}
         {COPY.soundOptIn}
       </label>
+      <Button
+        type="button"
+        variant="secondary"
+        size="primary"
+        onClick={() => playCueBestEffort(true)}
+      >
+        {COPY.previewSound}
+      </Button>
       <label className="type-body-s">
         <input
           type="checkbox"

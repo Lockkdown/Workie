@@ -27,6 +27,7 @@ export const COPY = {
   breakRunning: "Break",
   existingCycle: "A Pomodoro is already in progress.",
   soundOptIn: "Play sound",
+  previewSound: "Preview sound",
   alertsOptIn: "Allow alerts",
   mutedNote: "Events stay readable while muted.",
   skipFlourish: "Skip animation",

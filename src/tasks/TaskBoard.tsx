@@ -129,6 +129,7 @@ function TaskBoardSession({
   const [partialFailures, setPartialFailures] = useState<
     Record<string, PartialFailure>
   >({});
+  const [flourish, setFlourish] = useState(false);
   const [session, setSession] = useState<SessionState>({
     tasks: [],
     occurrences: [],
@@ -217,6 +218,10 @@ function TaskBoardSession({
             ...replaceEntity(prev, result.entity),
             statusHistory: result.history,
           }));
+          setFlourish(
+            typeof window !== "undefined" &&
+              !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          );
         } else if (op.kind === "abandon" && item) {
           const result = await persistAbandonEntity(
             appDb,
@@ -389,6 +394,8 @@ function TaskBoardSession({
         }));
         setFormOpen(false);
       }}
+      flourish={flourish}
+      onSkipFlourish={() => setFlourish(false)}
       handlers={handlers}
     />
   );

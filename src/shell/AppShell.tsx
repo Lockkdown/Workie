@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { MAIN_CONTENT_ID, SKIP_TO_MAIN } from "../a11y/checklist";
+import { ImportBoundary } from "../import/ImportBoundary";
 import { AppNav } from "./AppNav";
 import { DailyDesk } from "./DailyDesk";
 import {
@@ -17,7 +19,6 @@ import {
   type ThemeSetting,
 } from "./theme";
 import { saveThemeSetting } from "./themePersistence";
-import { ImportBoundary } from "../import/ImportBoundary";
 import { ThemeSettingControl } from "./ThemeSetting";
 
 export type ShellViewProps = {
@@ -43,6 +44,9 @@ export function ShellView({
 }: ShellViewProps) {
   return (
     <div className="app-shell">
+      <a className="skip-link" href={`#${MAIN_CONTENT_ID}`}>
+        {SKIP_TO_MAIN}
+      </a>
       <header className="app-chrome ui-ornament" data-ornament="shell">
         <div className="ui-ornament-content app-chrome-inner">
           <h1 className="type-display-xl">Workie</h1>
@@ -51,7 +55,7 @@ export function ShellView({
           <ImportBoundary />
         </div>
       </header>
-      <main className="app-main">
+      <main id={MAIN_CONTENT_ID} className="app-main" tabIndex={-1}>
         {destination === "Daily Desk" ? (
           <DailyDesk
             mode={mode}

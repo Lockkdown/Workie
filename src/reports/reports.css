@@ -58,6 +58,12 @@
   background: var(--color-border-strong);
 }
 
+.reports-skeleton {
+  min-height: 4rem;
+  min-width: 8rem;
+  background: var(--color-surface-raised);
+}
+
 .reports-partial {
   outline: var(--border-1) dashed var(--color-border-quiet);
 }

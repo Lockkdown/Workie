@@ -10,6 +10,7 @@ import {
   dragFixedBody,
   dragFlexibleBody,
   isFlexibleBlock,
+  isFixedBlock,
   isReserveBlock,
   packDay,
   resolveConflict,
@@ -201,6 +202,33 @@ export function previewReorder(
     },
     { confirmed: false },
   );
+}
+
+export function previewMoveToChain(
+  plan: DayPlan,
+  blockId: string,
+  precedingAnchorId: ChainId,
+): MutationPreview {
+  const block = plan.blocks.find((item) => item.id === blockId);
+  if (!block || !isFlexibleBlock(block)) {
+    throw new Error("Chain move applies to flexible blocks [D28]");
+  }
+  return dragFlexibleBody(
+    plan,
+    blockId,
+    { precedingAnchorId, chainPosition: 0 },
+    { confirmed: false },
+  );
+}
+
+export function chainTargets(plan: DayPlan): { id: string; label: string }[] {
+  return [
+    { id: "", label: COPY.chainFromStart },
+    ...plan.blocks.filter(isFixedBlock).map((block) => ({
+      id: block.id,
+      label: isReserveBlock(block) ? COPY.reserve : block.taskId,
+    })),
+  ];
 }
 
 export function chainLabel(chain: ChainId): string {

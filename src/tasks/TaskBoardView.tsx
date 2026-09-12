@@ -43,6 +43,8 @@ export type TaskBoardViewProps = {
   onCloseDetail: () => void;
   onCreated: (result: { task: Task; history: StatusHistoryEvent[] }) => void;
   handlers: BoardCardHandlers;
+  flourish?: boolean;
+  onSkipFlourish?: () => void;
 };
 
 export function noopBoardHandlers(): BoardCardHandlers {
@@ -151,6 +153,8 @@ export function TaskBoardView({
   onCloseDetail,
   onCreated,
   handlers,
+  flourish = false,
+  onSkipFlourish,
 }: TaskBoardViewProps): JSX.Element {
   const items = selectBoardItems(tasks, occurrences, now);
   const columns = groupBoard(items, statusHistory);
@@ -171,6 +175,22 @@ export function TaskBoardView({
     <Panel title={COPY.boardTitle} ornament="panel" role="dialog">
       <div className="task-board">
         <OfflineBanner online={online} />
+        {flourish ? (
+          <div
+            className="task-complete-flourish"
+            data-active="true"
+            data-ritual="complete"
+          >
+            <Button
+              type="button"
+              variant="secondary"
+              size="compact"
+              onClick={onSkipFlourish}
+            >
+              {COPY.skipFlourish}
+            </Button>
+          </div>
+        ) : null}
         <div className="task-board-toolbar">
           {showPrimary ? (
             <Button

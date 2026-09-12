@@ -4,6 +4,7 @@ import { loadCycles } from "../pomodoro/persist";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
 import { appDb } from "../shell/appDb";
+import { OfflineIcon } from "../timeline/icons";
 import { contributionCells } from "./contribution";
 import { COPY } from "./copy";
 import { filterOutcomeEvents, groupByDay, outcomeReport } from "./outcomes";
@@ -144,17 +145,22 @@ export function ReportsSurface() {
     <div className="reports-surface">
       <Panel title={COPY.title} ornament="panel">
         {!online ? (
-          <p className="type-body-s">
-            <span aria-hidden="true">⌁</span> {COPY.offline} ·{" "}
-            {COPY.savedLocally}
+          <p
+            className="offline-mark type-body-s"
+            role="status"
+            data-offline="true"
+          >
+            <OfflineIcon />
+            <span>{COPY.offline}</span>
+            <span>{COPY.savedLocally}</span>
           </p>
         ) : (
           <p className="type-body-s">{COPY.savedLocally}</p>
         )}
         {loadState === "loading" ? (
           <div className="reports-toolbar" aria-label={COPY.loading}>
-            <div className="plan-skeleton-group" />
-            <div className="plan-skeleton-group" />
+            <div className="reports-skeleton" />
+            <div className="reports-skeleton" />
           </div>
         ) : null}
         {errorCause ? (

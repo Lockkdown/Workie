@@ -21,6 +21,7 @@ import { COPY, CONFLICT_RESOLUTION_COPY } from "./copy";
 import {
   payloadFromDropData,
   previewConvert,
+  previewMoveToChain,
   previewScheduleFromDrop,
 } from "./schedule";
 import { TimelineSurface } from "./TimelineSurface";
@@ -320,6 +321,7 @@ describe("empty loading error offline markup [D91]", () => {
     });
     expect(html).toContain(COPY.offline);
     expect(html).toContain('data-icon="offline"');
+    expect(html).toContain('data-offline="true"');
     expect(html).toContain(COPY.savedLocally);
   });
 });
@@ -431,10 +433,44 @@ describe("labelled non-drag equivalents [D83] [D92]", () => {
     });
     expect(html).toContain(COPY.moveBlock);
     expect(html).toContain(COPY.resize);
+    expect(html).toContain(COPY.resizeStart);
+    expect(html).toContain(COPY.resizeEnd);
     expect(html).toContain(COPY.unschedule);
     expect(html).toContain(COPY.reorderInChain);
+    expect(html).toContain(COPY.moveToChain);
+    expect(html).toContain(COPY.chainFromStart);
     expect(html).toContain(COPY.makeFixed);
     expect(html).toContain(COPY.addReserve);
     expect(html).toContain(COPY.markAsRunning);
+  });
+});
+
+describe("move between flexible chains [D28] [D92]", () => {
+  it("uses the same preview as a drag onto another chain", () => {
+    const plan = createDayPlan(DAY, [
+      createFlexibleTaskBlock({
+        id: "flex",
+        taskId: "t-a",
+        day: DAY,
+        durationMs: HOUR,
+        chainPosition: 0,
+        precedingAnchorId: null,
+      }),
+      createFixedTaskBlock({
+        id: "meet",
+        taskId: "t-meet",
+        day: DAY,
+        startMs: noon,
+        endMs: noon + HOUR,
+      }),
+    ]);
+    const preview = previewMoveToChain(plan, "flex", "meet");
+    const moved = preview.next.blocks.find((block) => block.id === "flex");
+    expect(moved?.type).toBe("flexible");
+    if (moved?.type !== "flexible") {
+      throw new Error("expected flexible block");
+    }
+    expect(moved.precedingAnchorId).toBe("meet");
+    expect(moved.chainPosition).toBe(0);
   });
 });

@@ -169,6 +169,27 @@
   }
 }
 
+@media (forced-colors: active) {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"],
+  [data-theme="system"] {
+    --color-surface-base: Canvas;
+    --color-surface-raised: Canvas;
+    --color-surface-panel: Canvas;
+    --color-border-quiet: ButtonBorder;
+    --color-border-strong: ButtonText;
+    --color-text-primary: CanvasText;
+    --color-text-secondary: GrayText;
+    --color-focus: Highlight;
+  }
+
+  :focus-visible {
+    outline: var(--focus-outline-width) solid Highlight;
+    outline-offset: var(--focus-outline-offset);
+  }
+}
+
 .type-display-xl {
   font-family: var(--type-display-xl-family);
   font-size: var(--type-display-xl-size);

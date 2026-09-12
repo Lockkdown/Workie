@@ -25,7 +25,7 @@ export function Panel({
       data-kind={isDialog ? "dialog" : "panel"}
       role={role}
       aria-labelledby={titleId}
-      aria-modal={isDialog ? false : undefined}
+      aria-modal={isDialog ? true : undefined}
     >
       <div className="ui-ornament-content">
         <h2 id={titleId} className={titleClass}>

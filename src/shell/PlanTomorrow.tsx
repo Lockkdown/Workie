@@ -15,6 +15,7 @@ import { appDb } from "./appDb";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
 import { COPY } from "../planning/copy";
+import { OfflineIcon } from "../timeline/icons";
 import {
   commitPlanToCalendar,
   loadCarryOverIds,
@@ -209,8 +210,14 @@ export function PlanTomorrow() {
     <div className="plan-tomorrow plan-ritual">
       <Panel title={COPY.title} ornament="panel">
         {!online ? (
-          <p className="type-body-s">
-            {COPY.offline} · {saveLabel}
+          <p
+            className="offline-mark type-body-s"
+            role="status"
+            data-offline="true"
+          >
+            <OfflineIcon />
+            <span>{COPY.offline}</span>
+            <span>{saveLabel}</span>
           </p>
         ) : (
           <p className="type-body-s">{saveLabel}</p>

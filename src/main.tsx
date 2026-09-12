@@ -8,6 +8,7 @@ import "./styles/fonts.css";
 import "./styles/tokens.css";
 import "./ui/primitives.css";
 import "./shell/shell.css";
+import "./a11y/a11y.css";
 
 const root = document.getElementById("root");
 if (!root) {

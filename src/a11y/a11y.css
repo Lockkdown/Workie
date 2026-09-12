@@ -1,0 +1,35 @@
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-structure-16);
+  inset-block-start: var(--space-structure-16);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--target-primary);
+  min-height: var(--target-primary);
+  padding: var(--space-content-8) var(--space-content-12);
+  color: var(--color-text-primary);
+  background: var(--color-surface-panel);
+  text-decoration: none;
+}
+
+.skip-link:not(:focus) {
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.offline-mark {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-content-8);
+}

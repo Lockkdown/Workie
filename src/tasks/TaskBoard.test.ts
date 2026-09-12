@@ -258,6 +258,14 @@ describe("system states [D91]", () => {
     expect(html).toContain(COPY.saveStateOffline);
   });
 
+  it("offers a skippable completion flourish", () => {
+    const html = renderView({ flourish: true });
+    expect(html).toContain(COPY.skipFlourish);
+    expect(html).toContain("task-complete-flourish");
+    expect(css).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(css).toContain("task-complete-peak");
+  });
+
   it("shows partial failure on the affected card only", () => {
     const waiting = task("w", "Keep going");
     const other = task("o", "Fine");

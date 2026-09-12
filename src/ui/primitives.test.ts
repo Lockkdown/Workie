@@ -198,6 +198,7 @@ describe("five primitives", () => {
     expect(panel).toContain('data-kind="panel"');
     expect(panel).toContain("type-display-l");
     expect(dialog).toContain('role="dialog"');
+    expect(dialog).toContain('aria-modal="true"');
     expect(dialog).toContain("type-body-l");
     expect(dialog).toContain("Dialog");
   });

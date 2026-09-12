@@ -266,6 +266,15 @@ describe("F9 type, space, geometry, motion", () => {
     expect(reduced["--duration-opacity"]).toBe("120ms");
   });
 
+  it("keeps text, borders, and focus resolvable under forced-colors", () => {
+    expect(tokensCss).toMatch(/forced-colors:\s*active/);
+    const queryIdx = tokensCss.indexOf("forced-colors");
+    const media = braceBlock(tokensCss, queryIdx);
+    expect(media).toContain("CanvasText");
+    expect(media).toContain("ButtonBorder");
+    expect(media).toContain("Highlight");
+  });
+
   it("sets a 2px keyboard focus indicator with a 2px offset", () => {
     expect(token(tokensCss, "--focus-outline-width")).toBe("2px");
     expect(token(tokensCss, "--focus-outline-offset")).toBe("2px");

@@ -205,6 +205,28 @@
   gap: var(--space-content-4);
 }
 
+.task-complete-flourish[data-active="true"] {
+  animation: task-complete-peak 600ms ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-complete-flourish {
+    animation: none;
+  }
+}
+
+@keyframes task-complete-peak {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
 @media (max-width: 1023px) {
   .task-board-columns {
     grid-template-columns: 1fr;

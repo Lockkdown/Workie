@@ -38,6 +38,7 @@ export const COPY = {
   notChanged: "The task was not changed.",
   retry: "Retry",
   loading: "Loading tasks",
+  skipFlourish: "Skip animation",
   weekdayGroup: "Weekdays",
   titleRequired: "Title is required.",
   weekdayRequired: "Choose at least one weekday.",
