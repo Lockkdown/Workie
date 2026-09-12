@@ -79,10 +79,14 @@
   --target-primary: 44px;
   --target-compact: 24px;
   --target-compact-spacing: 24px;
+
+  --field-chrome-size-compact: 32px;
+  --field-chrome-size-touch: 44px;
 }
 
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
   --color-surface-base: #16121f;
   --color-surface-raised: #1f1a2b;
   --color-surface-panel: #2a2338;
@@ -105,9 +109,17 @@
   --color-contribution-3: #3fb894;
   --color-contribution-4plus: #5ee6c0;
   --color-focus: var(--color-text-primary);
+  --field-chrome-accent: var(--color-text-primary);
+  --field-chrome-surface: var(--color-surface-raised);
+  --field-chrome-border: var(--color-border-quiet);
+  --field-chrome-placeholder: var(--color-text-secondary);
+  --field-chrome-mark: var(--color-text-secondary);
+  --field-chrome-scrollbar-thumb: var(--color-text-secondary);
+  --field-chrome-scrollbar-track: var(--color-surface-raised);
 }
 
 [data-theme="light"] {
+  color-scheme: light;
   --color-surface-base: #f7f4fb;
   --color-surface-raised: #ffffff;
   --color-surface-panel: #efe9f6;
@@ -130,10 +142,18 @@
   --color-contribution-3: #3da98a;
   --color-contribution-4plus: #0e8f73;
   --color-focus: var(--color-text-primary);
+  --field-chrome-accent: var(--color-text-primary);
+  --field-chrome-surface: var(--color-surface-raised);
+  --field-chrome-border: var(--color-border-quiet);
+  --field-chrome-placeholder: var(--color-text-secondary);
+  --field-chrome-mark: var(--color-text-secondary);
+  --field-chrome-scrollbar-thumb: var(--color-text-secondary);
+  --field-chrome-scrollbar-track: var(--color-surface-raised);
 }
 
 @media (prefers-color-scheme: light) {
   [data-theme="system"] {
+    color-scheme: light;
     --color-surface-base: #f7f4fb;
     --color-surface-raised: #ffffff;
     --color-surface-panel: #efe9f6;
@@ -156,6 +176,13 @@
     --color-contribution-3: #3da98a;
     --color-contribution-4plus: #0e8f73;
     --color-focus: var(--color-text-primary);
+    --field-chrome-accent: var(--color-text-primary);
+    --field-chrome-surface: var(--color-surface-raised);
+    --field-chrome-border: var(--color-border-quiet);
+    --field-chrome-placeholder: var(--color-text-secondary);
+    --field-chrome-mark: var(--color-text-secondary);
+    --field-chrome-scrollbar-thumb: var(--color-text-secondary);
+    --field-chrome-scrollbar-track: var(--color-surface-raised);
   }
 }
 
@@ -182,6 +209,13 @@
     --color-text-primary: CanvasText;
     --color-text-secondary: GrayText;
     --color-focus: Highlight;
+    --field-chrome-accent: var(--color-text-primary);
+    --field-chrome-surface: var(--color-surface-raised);
+    --field-chrome-border: var(--color-border-quiet);
+    --field-chrome-placeholder: var(--color-text-secondary);
+    --field-chrome-mark: var(--color-text-secondary);
+    --field-chrome-scrollbar-thumb: var(--color-text-secondary);
+    --field-chrome-scrollbar-track: var(--color-surface-raised);
   }
 
   :focus-visible {

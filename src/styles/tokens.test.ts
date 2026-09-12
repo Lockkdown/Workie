@@ -285,6 +285,35 @@ describe("F9 type, space, geometry, motion", () => {
       /outline-offset:\s*var\(--focus-outline-offset\)/,
     );
   });
+
+  it("defines field chrome tokens from the F9 initial set [D103] [D105]", () => {
+    expect(token(tokensCss, "--field-chrome-size-compact")).toBe("32px");
+    expect(token(tokensCss, "--field-chrome-size-touch")).toBe("44px");
+    expect(token(tokensCss, "--field-chrome-accent")).toBe(
+      "var(--color-text-primary)",
+    );
+    expect(token(tokensCss, "--field-chrome-surface")).toBe(
+      "var(--color-surface-raised)",
+    );
+    expect(token(tokensCss, "--field-chrome-border")).toBe(
+      "var(--color-border-quiet)",
+    );
+    expect(token(tokensCss, "--field-chrome-placeholder")).toBe(
+      "var(--color-text-secondary)",
+    );
+    expect(token(tokensCss, "--field-chrome-mark")).toBe(
+      "var(--color-text-secondary)",
+    );
+    expect(token(tokensCss, "--field-chrome-scrollbar-thumb")).toBe(
+      "var(--color-text-secondary)",
+    );
+    expect(token(tokensCss, "--field-chrome-scrollbar-track")).toBe(
+      "var(--color-surface-raised)",
+    );
+    expect(token(tokensCss, "--field-chrome-accent")).not.toContain(
+      "color-status",
+    );
+  });
 });
 
 describe("contrast of intended token pairs", () => {
@@ -314,5 +343,35 @@ describe("contrast of intended token pairs", () => {
     for (const [fg, bg] of focusPairs) {
       expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(3);
     }
+  });
+
+  it("gives field chrome placeholder AA contrast on surface-raised in both themes [D92] [D103]", () => {
+    expect(
+      contrastRatio(
+        DARK["--color-text-secondary"],
+        DARK["--color-surface-raised"],
+      ),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(
+      contrastRatio(
+        LIGHT["--color-text-secondary"],
+        LIGHT["--color-surface-raised"],
+      ),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("gives scrollbar thumb 3:1 against its track in both themes [D92] [D105]", () => {
+    expect(
+      contrastRatio(
+        DARK["--color-text-secondary"],
+        DARK["--color-surface-raised"],
+      ),
+    ).toBeGreaterThanOrEqual(3);
+    expect(
+      contrastRatio(
+        LIGHT["--color-text-secondary"],
+        LIGHT["--color-surface-raised"],
+      ),
+    ).toBeGreaterThanOrEqual(3);
   });
 });

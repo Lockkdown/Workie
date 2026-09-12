@@ -158,9 +158,8 @@
 }
 
 .timeline-field input {
-  min-height: var(--target-primary);
+  width: 100%;
   min-width: var(--target-primary);
-  font-family: var(--font-body);
 }
 
 .timeline-partial {

@@ -4,6 +4,13 @@
   gap: var(--space-structure-32);
   padding: var(--space-structure-24);
   padding-top: 0;
+  box-sizing: border-box;
+}
+
+.primitives-harness *,
+.primitives-harness *::before,
+.primitives-harness *::after {
+  box-sizing: border-box;
 }
 
 .primitives-harness > h2 {
@@ -29,4 +36,73 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--space-content-12);
+}
+
+.primitives-field-chrome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+}
+
+.primitives-field-chrome > h3 {
+  margin: 0;
+}
+
+.primitives-field-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+  min-width: 0;
+}
+
+.primitives-field-grid > label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+  min-width: 0;
+}
+
+.primitives-field-inline {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-content-8);
+  min-height: var(--target-primary);
+}
+
+.primitives-field-grid > label.primitives-field-inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.primitives-field-grid
+  :is(
+    input[type="text"],
+    input:not([type]),
+    textarea,
+    select,
+    input[type="number"],
+    input[type="file"]
+  ) {
+  width: 100%;
+}
+
+.primitives-field-inline :is(input[type="checkbox"], input[type="radio"]) {
+  width: var(--field-chrome-size-compact);
+}
+
+.primitives-scroll {
+  max-height: 6rem;
+  overflow: auto;
+  padding: var(--space-content-8);
+}
+
+.primitives-scroll p {
+  margin: 0 0 var(--space-content-8);
+}
+
+.primitives-harness-page body {
+  margin: 0;
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
 }

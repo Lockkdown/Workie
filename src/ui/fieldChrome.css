@@ -1,0 +1,506 @@
+/* Shared field chrome for the seven native controls. A Concept, not a primitive [D103]. */
+
+.ui-field,
+input[type="text"],
+input:not([type]),
+textarea,
+select,
+input[type="number"],
+input[type="file"],
+input[type="checkbox"],
+input[type="radio"] {
+  --_cut: var(--chamfer-4);
+  --_edge: calc(var(--chamfer-4) + var(--border-1));
+  --_fill: var(--field-chrome-surface);
+  --_stroke: var(--field-chrome-border);
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-line);
+  font-weight: var(--type-body-m-weight);
+  background-color: transparent;
+  background-image:
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-repeat: no-repeat;
+  background-size: 51% 51%;
+  background-position:
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+  background-origin: border-box;
+  background-clip: border-box;
+  border: 0;
+  border-radius: 0;
+  box-shadow: var(--elevation-offset) var(--color-border-strong);
+  overflow: visible;
+}
+
+.ui-field::placeholder,
+input[type="text"]::placeholder,
+input:not([type])::placeholder,
+textarea::placeholder,
+select::placeholder,
+input[type="number"]::placeholder,
+input[type="file"]::placeholder {
+  color: var(--field-chrome-placeholder);
+  -webkit-text-fill-color: var(--field-chrome-placeholder);
+  opacity: 1;
+}
+
+.ui-field::-webkit-input-placeholder,
+input[type="text"]::-webkit-input-placeholder,
+input:not([type])::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+input[type="number"]::-webkit-input-placeholder {
+  color: var(--field-chrome-placeholder);
+  -webkit-text-fill-color: var(--field-chrome-placeholder);
+  opacity: 1;
+}
+
+.ui-field::-moz-placeholder,
+input[type="text"]::-moz-placeholder,
+input:not([type])::-moz-placeholder,
+textarea::-moz-placeholder,
+input[type="number"]::-moz-placeholder {
+  color: var(--field-chrome-placeholder);
+  opacity: 1;
+}
+
+input[type="text"],
+input:not([type]),
+textarea,
+select,
+input[type="number"],
+input[type="file"],
+.ui-field:not([type="checkbox"], [type="radio"]) {
+  min-height: var(--field-chrome-size-touch);
+  padding: var(--space-content-8);
+}
+
+textarea {
+  min-height: calc(var(--field-chrome-size-touch) + var(--space-structure-32));
+  resize: vertical;
+}
+
+select {
+  padding-inline-end: var(--space-structure-24);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='currentColor' d='M1 2h6L4 7z'/%3E%3C/svg%3E"),
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-size:
+    8px 8px,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-position:
+    right var(--space-content-8) center,
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+  background-repeat: no-repeat;
+  color: var(--color-text-primary);
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: var(--field-chrome-size-compact);
+  height: var(--field-chrome-size-compact);
+  min-width: var(--field-chrome-size-compact);
+  min-height: var(--field-chrome-size-compact);
+  padding: 0;
+  color: var(--field-chrome-accent);
+  accent-color: var(--field-chrome-accent);
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  --_tick-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='currentColor' stroke-width='2' d='M3 8l4 4 6-8'/%3E%3C/svg%3E");
+}
+
+input[type="radio"] {
+  --_tick-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='5' y='5' width='6' height='6' fill='currentColor'/%3E%3C/svg%3E");
+}
+
+input[type="checkbox"]:checked {
+  background-image:
+    var(--_tick-image),
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-size:
+    16px 16px,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-position:
+    center,
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+}
+
+input[type="radio"]:checked {
+  background-image:
+    var(--_tick-image),
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-size:
+    16px 16px,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-position:
+    center,
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+}
+
+input[type="file"]::file-selector-button {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: var(--field-chrome-size-compact);
+  margin: 0;
+  margin-inline-end: var(--space-content-8);
+  padding: var(--space-content-4) var(--space-content-8);
+  color: var(--color-text-primary);
+  font: inherit;
+  background: var(--field-chrome-surface);
+  border: var(--border-1) solid var(--field-chrome-border);
+  box-shadow: var(--elevation-offset) var(--color-border-strong);
+  cursor: pointer;
+}
+
+.ui-field:focus-visible,
+input[type="text"]:focus-visible,
+input:not([type]):focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+input[type="number"]:focus-visible,
+input[type="file"]:focus-visible,
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.ui-field[aria-invalid="true"],
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+select[aria-invalid="true"] {
+  --_stroke: var(--color-border-strong);
+}
+
+.ui-field:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  --_fill: var(--color-surface-panel);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 4px,
+      var(--color-border-quiet) 4px 5px
+    ),
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-size:
+    auto,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-position:
+    0 0,
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+}
+
+input[type="checkbox"]:checked:disabled,
+input[type="radio"]:checked:disabled {
+  background-image:
+    var(--_tick-image),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 4px,
+      var(--color-border-quiet) 4px 5px
+    ),
+    linear-gradient(
+      135deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      225deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      315deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    ),
+    linear-gradient(
+      45deg,
+      transparent var(--_cut),
+      var(--_stroke) var(--_cut),
+      var(--_stroke) var(--_edge),
+      var(--_fill) var(--_edge)
+    );
+  background-size:
+    16px 16px,
+    auto,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-position:
+    center,
+    0 0,
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+}
+
+.ui-file-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+  min-width: 0;
+}
+
+html,
+.workie-scroll,
+.task-board-layer,
+.import-review-layer,
+.timeline-scroll {
+  scrollbar-color: var(--field-chrome-scrollbar-thumb)
+    var(--field-chrome-scrollbar-track);
+}
+
+@media (forced-colors: active) {
+  html,
+  .workie-scroll,
+  .task-board-layer,
+  .import-review-layer,
+  .timeline-scroll {
+    scrollbar-color: auto;
+  }
+}
+
+fieldset {
+  display: grid;
+  gap: var(--space-content-8);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+details > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-content-8);
+  min-height: var(--target-compact);
+  overflow: visible;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details > summary::marker {
+  content: none;
+  display: none;
+}
+
+details > summary::before {
+  content: "";
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--field-chrome-mark);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  pointer-events: none;
+}
+
+details[open] > summary::before {
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+details > summary:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
+}

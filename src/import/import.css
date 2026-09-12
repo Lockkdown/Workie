@@ -112,7 +112,6 @@
 .import-fields input,
 .import-fields textarea,
 .import-subtasks input {
-  font: inherit;
   width: 100%;
 }
 

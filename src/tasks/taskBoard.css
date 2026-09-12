@@ -159,14 +159,7 @@
 }
 
 .task-board-form-row > :is(input, textarea) {
-  min-height: var(--target-primary);
-  padding: var(--space-content-8);
-  color: var(--color-text-primary);
-  background: var(--color-surface-raised);
-  border: var(--border-1) solid var(--color-border-quiet);
-  font-family: var(--type-body-m-family);
-  font-size: var(--type-body-m-size);
-  line-height: var(--type-body-m-line);
+  width: 100%;
 }
 
 .task-board-weekdays {
