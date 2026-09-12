@@ -13,6 +13,7 @@ import { newId } from "../id";
 import { parseWorkieDayStart } from "../domain/workieDay";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
+import { ConstraintField, WorkieForm } from "../ui/WorkieForm";
 import { COPY } from "./copy";
 import { previewRows } from "../timeline/schedule";
 import { applyRevision } from "./ritual";
@@ -158,9 +159,9 @@ export function InDayInsertion({
               </Button>
             </>
           ) : (
-            <form
+            <WorkieForm
               className="plan-fields"
-              onSubmit={(event) => void handlePreview(event)}
+              onValidSubmit={(event) => void handlePreview(event)}
             >
               <label className="type-body-s">
                 {COPY.pickTask}
@@ -204,51 +205,61 @@ export function InDayInsertion({
               </Button>
               <label className="type-body-s">
                 {COPY.duration}
-                <input
-                  type="number"
-                  min={5}
-                  value={durationMin}
-                  onChange={(event) =>
-                    setDurationMin(Number(event.target.value))
-                  }
-                />
+                <ConstraintField fieldId="insert-duration">
+                  <input
+                    type="number"
+                    min={5}
+                    value={durationMin}
+                    onChange={(event) =>
+                      setDurationMin(Number(event.target.value))
+                    }
+                  />
+                </ConstraintField>
               </label>
               {type === "fixed" ? (
                 <>
                   <label className="type-body-s">
                     {COPY.startHour}
-                    <input
-                      type="number"
-                      min={0}
-                      max={23}
-                      value={hour}
-                      onChange={(event) => setHour(Number(event.target.value))}
-                    />
+                    <ConstraintField fieldId="insert-hour">
+                      <input
+                        type="number"
+                        min={0}
+                        max={23}
+                        value={hour}
+                        onChange={(event) =>
+                          setHour(Number(event.target.value))
+                        }
+                      />
+                    </ConstraintField>
                   </label>
                   <label className="type-body-s">
                     {COPY.startMinute}
-                    <input
-                      type="number"
-                      min={0}
-                      max={59}
-                      value={minute}
-                      onChange={(event) =>
-                        setMinute(Number(event.target.value))
-                      }
-                    />
+                    <ConstraintField fieldId="insert-minute">
+                      <input
+                        type="number"
+                        min={0}
+                        max={59}
+                        value={minute}
+                        onChange={(event) =>
+                          setMinute(Number(event.target.value))
+                        }
+                      />
+                    </ConstraintField>
                   </label>
                 </>
               ) : (
                 <label className="type-body-s">
                   {COPY.chainPosition}
-                  <input
-                    type="number"
-                    min={0}
-                    value={chainPosition}
-                    onChange={(event) =>
-                      setChainPosition(Number(event.target.value))
-                    }
-                  />
+                  <ConstraintField fieldId="insert-chain">
+                    <input
+                      type="number"
+                      min={0}
+                      value={chainPosition}
+                      onChange={(event) =>
+                        setChainPosition(Number(event.target.value))
+                      }
+                    />
+                  </ConstraintField>
                 </label>
               )}
               <Button type="submit" variant="secondary" size="primary">
@@ -262,7 +273,7 @@ export function InDayInsertion({
               >
                 {COPY.cancel}
               </Button>
-            </form>
+            </WorkieForm>
           )}
         </Panel>
       ) : null}

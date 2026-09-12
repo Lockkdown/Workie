@@ -3,6 +3,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { persistCreatedTask } from "./boardActions";
 import { COPY } from "./copy";
+import { COPY as UI_COPY } from "../ui/copy";
 import { TaskForm } from "./TaskForm";
 
 vi.mock("./boardActions", async (importOriginal) => {
@@ -104,12 +105,19 @@ describe("TaskForm interaction", () => {
     expect(persist).not.toHaveBeenCalled();
     expect(onCreated).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
-    expect(
-      container.querySelector("[data-form-error='true']")?.textContent,
-    ).toBe(COPY.titleRequired);
-
     const title = container.querySelector("#task-form-title");
     expect(title).toBeInstanceOf(HTMLInputElement);
+    expect((title as HTMLInputElement).required).toBe(true);
+    expect(title?.getAttribute("aria-required")).toBe("true");
+    expect(title?.getAttribute("aria-invalid")).toBe("true");
+    expect(title?.getAttribute("aria-describedby")).toBe(
+      "task-form-title-constraint-message",
+    );
+    expect(
+      container.querySelector("[data-field-message='true']")?.textContent,
+    ).toBe(UI_COPY.valueMissing);
+    expect(document.activeElement).toBe(title);
+
     setInputValue(title as HTMLInputElement, "   ");
     act(() => {
       form?.dispatchEvent(
@@ -119,8 +127,10 @@ describe("TaskForm interaction", () => {
     expect(persist).not.toHaveBeenCalled();
     expect(onCreated).not.toHaveBeenCalled();
     expect(
-      container.querySelector("[data-form-error='true']")?.textContent,
+      container.querySelector("[data-field-message='true']")?.textContent,
     ).toBe(COPY.titleRequired);
+    expect(title?.getAttribute("aria-invalid")).toBe("true");
+    expect(document.activeElement).toBe(title);
   });
 
   it("trims leading and trailing whitespace from the title on submit", async () => {

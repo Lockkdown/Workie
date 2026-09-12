@@ -2,6 +2,7 @@ import { useState, type FormEvent, type JSX } from "react";
 import { localUserSource } from "../desk/boardContract";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
+import { ConstraintField, WorkieForm } from "../ui/WorkieForm";
 import type { StatusHistoryEvent, Task, Weekday } from "../domain/types";
 import { persistCreatedTask, type CreateTaskFields } from "./boardActions";
 import { COPY, WEEKDAY_OPTIONS } from "./copy";
@@ -26,6 +27,7 @@ export function TaskForm({
   const [repeat, setRepeat] = useState(initialRepeat);
   const [weekdays, setWeekdays] = useState<Weekday[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
+  const [titleExtra, setTitleExtra] = useState<string | undefined>(undefined);
   const [pending, setPending] = useState(false);
   const source = localUserSource();
 
@@ -44,14 +46,18 @@ export function TaskForm({
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
   ): Promise<void> {
-    event.preventDefault();
     const trimmed = title.trim();
     if (trimmed.length === 0) {
-      setError(COPY.titleRequired);
+      setTitleExtra(COPY.titleRequired);
+      document.getElementById("task-form-title")?.focus();
       return;
     }
+    setTitleExtra(undefined);
     if (repeat && weekdays.length === 0) {
       setError(COPY.weekdayRequired);
+      event.currentTarget
+        .querySelector<HTMLButtonElement>("[data-weekday-selector] button")
+        ?.focus();
       return;
     }
     const fields: CreateTaskFields = {
@@ -80,23 +86,27 @@ export function TaskForm({
 
   return (
     <Panel title={COPY.createTask} ornament="panel" role="dialog">
-      <form
+      <WorkieForm
         className="task-board-form"
-        onSubmit={(event) => void handleSubmit(event)}
+        onValidSubmit={(event) => void handleSubmit(event)}
       >
         <div className="task-board-form-row">
           <label className="type-body-m" htmlFor="task-form-title">
             {COPY.title} *
           </label>
-          <input
-            id="task-form-title"
-            className="type-body-m"
-            name="title"
-            required
-            aria-required="true"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-          />
+          <ConstraintField fieldId="task-form-title" extraMessage={titleExtra}>
+            <input
+              className="type-body-m"
+              name="title"
+              required
+              aria-required="true"
+              value={title}
+              onChange={(event) => {
+                setTitle(event.target.value);
+                setTitleExtra(undefined);
+              }}
+            />
+          </ConstraintField>
         </div>
         <div className="task-board-form-row">
           <label className="type-body-m" htmlFor="task-form-description">
@@ -218,7 +228,7 @@ export function TaskForm({
             {COPY.createTask}
           </Button>
         </div>
-      </form>
+      </WorkieForm>
     </Panel>
   );
 }

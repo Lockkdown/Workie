@@ -15,6 +15,7 @@ import { newId } from "../id";
 import { appDb } from "./appDb";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
+import { ConstraintField, WorkieForm } from "../ui/WorkieForm";
 import { COPY } from "../planning/copy";
 import { OfflineIcon } from "../timeline/icons";
 import {
@@ -335,10 +336,9 @@ export function PlanTomorrow() {
                   </Button>
                 </div>
                 {placeFor === `${item.id}:fixed` ? (
-                  <form
+                  <WorkieForm
                     className="plan-fields"
-                    onSubmit={(event) => {
-                      event.preventDefault();
+                    onValidSubmit={() => {
                       try {
                         mutate((current) => {
                           const placed = placeFixed({
@@ -366,49 +366,56 @@ export function PlanTomorrow() {
                   >
                     <label className="type-body-s">
                       {COPY.startHour}
-                      <input
-                        type="number"
-                        min={0}
-                        max={23}
-                        value={startHour}
-                        onChange={(event) =>
-                          setStartHour(Number(event.target.value))
-                        }
-                      />
+                      <ConstraintField fieldId={`plan-${item.id}-fixed-hour`}>
+                        <input
+                          type="number"
+                          min={0}
+                          max={23}
+                          value={startHour}
+                          onChange={(event) =>
+                            setStartHour(Number(event.target.value))
+                          }
+                        />
+                      </ConstraintField>
                     </label>
                     <label className="type-body-s">
                       {COPY.startMinute}
-                      <input
-                        type="number"
-                        min={0}
-                        max={59}
-                        value={startMinute}
-                        onChange={(event) =>
-                          setStartMinute(Number(event.target.value))
-                        }
-                      />
+                      <ConstraintField fieldId={`plan-${item.id}-fixed-minute`}>
+                        <input
+                          type="number"
+                          min={0}
+                          max={59}
+                          value={startMinute}
+                          onChange={(event) =>
+                            setStartMinute(Number(event.target.value))
+                          }
+                        />
+                      </ConstraintField>
                     </label>
                     <label className="type-body-s">
                       {COPY.duration}
-                      <input
-                        type="number"
-                        min={5}
-                        value={durationMin}
-                        onChange={(event) =>
-                          setDurationMin(Number(event.target.value))
-                        }
-                      />
+                      <ConstraintField
+                        fieldId={`plan-${item.id}-fixed-duration`}
+                      >
+                        <input
+                          type="number"
+                          min={5}
+                          value={durationMin}
+                          onChange={(event) =>
+                            setDurationMin(Number(event.target.value))
+                          }
+                        />
+                      </ConstraintField>
                     </label>
                     <Button type="submit" variant="secondary" size="primary">
                       {COPY.placeFixed}
                     </Button>
-                  </form>
+                  </WorkieForm>
                 ) : null}
                 {placeFor === `${item.id}:flexible` ? (
-                  <form
+                  <WorkieForm
                     className="plan-fields"
-                    onSubmit={(event) => {
-                      event.preventDefault();
+                    onValidSubmit={() => {
                       try {
                         mutate((current) => {
                           const placed = placeFlexible({
@@ -437,14 +444,18 @@ export function PlanTomorrow() {
                   >
                     <label className="type-body-s">
                       {COPY.duration}
-                      <input
-                        type="number"
-                        min={5}
-                        value={durationMin}
-                        onChange={(event) =>
-                          setDurationMin(Number(event.target.value))
-                        }
-                      />
+                      <ConstraintField
+                        fieldId={`plan-${item.id}-flexible-duration`}
+                      >
+                        <input
+                          type="number"
+                          min={5}
+                          value={durationMin}
+                          onChange={(event) =>
+                            setDurationMin(Number(event.target.value))
+                          }
+                        />
+                      </ConstraintField>
                     </label>
                     <label className="type-body-s">
                       {COPY.precedingAnchor}
@@ -462,19 +473,23 @@ export function PlanTomorrow() {
                     </label>
                     <label className="type-body-s">
                       {COPY.chainPosition}
-                      <input
-                        type="number"
-                        min={0}
-                        value={chainPosition}
-                        onChange={(event) =>
-                          setChainPosition(Number(event.target.value))
-                        }
-                      />
+                      <ConstraintField
+                        fieldId={`plan-${item.id}-flexible-chain`}
+                      >
+                        <input
+                          type="number"
+                          min={0}
+                          value={chainPosition}
+                          onChange={(event) =>
+                            setChainPosition(Number(event.target.value))
+                          }
+                        />
+                      </ConstraintField>
                     </label>
                     <Button type="submit" variant="secondary" size="primary">
                       {COPY.placeFlexible}
                     </Button>
-                  </form>
+                  </WorkieForm>
                 ) : null}
                 {partial[item.id] ? (
                   <p className="type-body-s">{partial[item.id]}</p>

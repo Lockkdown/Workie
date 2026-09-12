@@ -2,8 +2,9 @@ import type { JSX } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
+import { ConstraintField, WorkieForm } from "../ui/WorkieForm";
 import { COPY } from "./copy";
-import { itemPartialError, validateSelected } from "./reviewState";
+import { itemPartialError } from "./reviewState";
 import type { DuplicateLevel, ReviewItem, ReviewSession } from "./types";
 import "./import.css";
 
@@ -219,24 +220,46 @@ function ReviewItemCard({
       <div className="import-fields">
         <label className="type-body-m" htmlFor={titleId}>
           {COPY.title}
-          <input
-            id={titleId}
-            className="type-body-m"
-            value={item.title}
-            onChange={(event) => onTitle(item.itemKey, event.target.value)}
-          />
+          <ConstraintField
+            fieldId={titleId}
+            extraMessage={
+              item.selected && item.title.trim().length === 0
+                ? `Task ${item.itemKey}: title is required.`
+                : undefined
+            }
+          >
+            <input
+              className="type-body-m"
+              required={item.selected}
+              aria-required={item.selected || undefined}
+              value={item.title}
+              onChange={(event) => onTitle(item.itemKey, event.target.value)}
+            />
+          </ConstraintField>
         </label>
         <label className="type-body-m" htmlFor={descId}>
           {COPY.description}
-          <textarea
-            id={descId}
-            className="type-body-m"
-            rows={3}
-            value={item.description}
-            onChange={(event) =>
-              onDescription(item.itemKey, event.target.value)
+          <ConstraintField
+            fieldId={descId}
+            extraMessage={
+              item.selected &&
+              item.title.trim().length > 0 &&
+              item.description.trim().length === 0
+                ? `Task ${item.itemKey}: description is required.`
+                : undefined
             }
-          />
+          >
+            <textarea
+              className="type-body-m"
+              rows={3}
+              required={item.selected}
+              aria-required={item.selected || undefined}
+              value={item.description}
+              onChange={(event) =>
+                onDescription(item.itemKey, event.target.value)
+              }
+            />
+          </ConstraintField>
         </label>
       </div>
       <fieldset className="import-subtasks">
@@ -322,7 +345,7 @@ export function ImportReviewView({
   onKeepReview,
   onConfirmDiscard,
 }: ImportReviewViewProps): JSX.Element {
-  const canConfirm = validateSelected(session).ok && !committing && !loading;
+  const canSubmit = !committing && !loading;
 
   const layer = (
     <div
@@ -330,7 +353,12 @@ export function ImportReviewView({
       data-draft-saved={String(draftSavedAt)}
     >
       <Panel title={COPY.reviewTitle} ornament="panel" role="dialog">
-        <div className="import-review-body">
+        <WorkieForm
+          className="import-review-body"
+          onValidSubmit={() => {
+            onConfirm();
+          }}
+        >
           <OfflineBanner online={online} />
           {loading ? (
             <div
@@ -397,16 +425,11 @@ export function ImportReviewView({
                 {COPY.discard}
               </Button>
             )}
-            <Button
-              type="button"
-              variant="primary"
-              disabled={!canConfirm}
-              onClick={onConfirm}
-            >
+            <Button type="submit" variant="primary" disabled={!canSubmit}>
               {COPY.confirm}
             </Button>
           </div>
-        </div>
+        </WorkieForm>
       </Panel>
     </div>
   );

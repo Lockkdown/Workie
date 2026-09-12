@@ -170,8 +170,8 @@ describe("container chrome [D105] [D106] [D107]", () => {
   });
 });
 
-describe("visible file control [D103]", () => {
-  it("keeps the native file input visible for T13", () => {
+describe("file control [D103] [D104]", () => {
+  it("keeps a native file input that is not a visible control", () => {
     const html = renderToStaticMarkup(
       createElement(FileControl, {
         id: "batch-file",
@@ -180,7 +180,10 @@ describe("visible file control [D103]", () => {
     );
     expect(html).toContain('type="file"');
     expect(html).toContain("Batch file");
-    expect(html).toContain('for="batch-file"');
-    expect(html).not.toMatch(/clip:\s*rect/);
+    expect(html).toContain('for="batch-file-trigger"');
+    expect(html).toContain("ui-file-native");
+    expect(html).toContain("Choose file");
+    expect(html).toContain("No file selected.");
+    expect(html).not.toContain("No file chosen");
   });
 });

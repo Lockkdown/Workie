@@ -21,6 +21,7 @@ import {
   restoreReviewDraft,
   saveReviewDraft,
 } from "./draft";
+import { FileControl } from "../ui/FileControl";
 import { ingestBatchFile } from "./ingest";
 import { ImportReviewView } from "./ImportReview";
 import {
@@ -218,12 +219,9 @@ export function ImportBoundary(): JSX.Element {
   return (
     <>
       <div className="import-entry">
-        <label className="type-body-m" htmlFor="import-batch-file">
-          {COPY.importBatch}
-        </label>
-        <input
+        <FileControl
           id="import-batch-file"
-          type="file"
+          label={COPY.importBatch}
           accept=".json"
           onChange={onFileChange}
         />

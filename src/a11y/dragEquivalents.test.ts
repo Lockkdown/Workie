@@ -188,7 +188,7 @@ describe("drag equivalents [D6] [D14] [D22] [D28] [D83] [D92]", () => {
     expect(html).toContain(IMPORT_COPY.moveUp);
     expect(html).toContain(IMPORT_COPY.moveDown);
     const boundary = source("import/ImportBoundary.tsx");
-    expect(boundary).toContain('type="file"');
+    expect(boundary).toContain("FileControl");
     expect(boundary).toContain("onDrop");
     expect(boundary).toContain("COPY.importBatch");
   });

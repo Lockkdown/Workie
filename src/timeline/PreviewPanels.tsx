@@ -14,6 +14,7 @@ import {
 } from "../calendar/index";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
+import { ConstraintField, WorkieForm } from "../ui/WorkieForm";
 import { StatusMark } from "../ui/StatusMark";
 import { COPY, CONFLICT_RESOLUTION_COPY } from "./copy";
 import { formatSpan, hmFromMs, msFromHm } from "./format";
@@ -120,7 +121,7 @@ export function ScheduleDialog({
 
   return (
     <Panel title={COPY.scheduleOnTimeline} role="dialog" ornament="panel">
-      <form onSubmit={handleSubmit}>
+      <WorkieForm onValidSubmit={handleSubmit}>
         <p className="type-body-m">{COPY.chooseType}</p>
         <div className="timeline-actions">
           <Button
@@ -145,44 +146,50 @@ export function ScheduleDialog({
         <label className="timeline-field type-body-s">
           {COPY.startTime}
           <span>
-            <input
-              type="number"
-              min={0}
-              max={23}
-              value={clock.hour}
-              aria-label="Start hour"
-              onChange={(event) =>
-                handleStart(Number(event.target.value), clock.minute)
-              }
-            />
-            <input
-              type="number"
-              min={0}
-              max={59}
-              step={5}
-              value={clock.minute}
-              aria-label="Start minute"
-              onChange={(event) =>
-                handleStart(clock.hour, Number(event.target.value))
-              }
-            />
+            <ConstraintField fieldId="schedule-start-hour">
+              <input
+                type="number"
+                min={0}
+                max={23}
+                value={clock.hour}
+                aria-label="Start hour"
+                onChange={(event) =>
+                  handleStart(Number(event.target.value), clock.minute)
+                }
+              />
+            </ConstraintField>
+            <ConstraintField fieldId="schedule-start-minute">
+              <input
+                type="number"
+                min={0}
+                max={59}
+                step={5}
+                value={clock.minute}
+                aria-label="Start minute"
+                onChange={(event) =>
+                  handleStart(clock.hour, Number(event.target.value))
+                }
+              />
+            </ConstraintField>
           </span>
         </label>
         <label className="timeline-field type-body-s">
           {COPY.duration}
-          <input
-            type="number"
-            min={5}
-            step={5}
-            value={Math.round(draft.durationMs / 60_000)}
-            aria-label={COPY.duration}
-            onChange={(event) =>
-              onChange({
-                ...draft,
-                durationMs: Math.max(5, Number(event.target.value)) * 60_000,
-              })
-            }
-          />
+          <ConstraintField fieldId="schedule-duration">
+            <input
+              type="number"
+              min={5}
+              step={5}
+              value={Math.round(draft.durationMs / 60_000)}
+              aria-label={COPY.duration}
+              onChange={(event) =>
+                onChange({
+                  ...draft,
+                  durationMs: Math.max(5, Number(event.target.value)) * 60_000,
+                })
+              }
+            />
+          </ConstraintField>
         </label>
         {live ? (
           <>
@@ -222,7 +229,7 @@ export function ScheduleDialog({
             {COPY.cancel}
           </Button>
         </div>
-      </form>
+      </WorkieForm>
     </Panel>
   );
 }
@@ -333,10 +340,9 @@ export function ConflictPanel({ plan, onPropose }: ConflictPanelProps) {
             </li>
           ))}
         </ul>
-        <form
+        <WorkieForm
           className="timeline-actions"
-          onSubmit={(event) => {
-            event.preventDefault();
+          onValidSubmit={(event) => {
             const data = new FormData(event.currentTarget);
             const durationMs = Number(data.get("duration")) * 60_000;
             const chainPosition = Number(data.get("order"));
@@ -346,22 +352,26 @@ export function ConflictPanel({ plan, onPropose }: ConflictPanelProps) {
         >
           <label className="timeline-field type-body-s">
             {COPY.duration}
-            <input
-              name="duration"
-              type="number"
-              min={5}
-              step={5}
-              defaultValue={durationDefault}
-            />
+            <ConstraintField fieldId="conflict-duration">
+              <input
+                name="duration"
+                type="number"
+                min={5}
+                step={5}
+                defaultValue={durationDefault}
+              />
+            </ConstraintField>
           </label>
           <label className="timeline-field type-body-s">
             {COPY.chainPosition}
-            <input
-              name="order"
-              type="number"
-              min={0}
-              defaultValue={orderDefault}
-            />
+            <ConstraintField fieldId="conflict-order">
+              <input
+                name="order"
+                type="number"
+                min={0}
+                defaultValue={orderDefault}
+              />
+            </ConstraintField>
           </label>
           {CONFLICT_RESOLUTIONS.map((resolution) => (
             <Button
@@ -375,7 +385,7 @@ export function ConflictPanel({ plan, onPropose }: ConflictPanelProps) {
               {CONFLICT_RESOLUTION_COPY[resolution]}
             </Button>
           ))}
-        </form>
+        </WorkieForm>
       </div>
     </section>
   );

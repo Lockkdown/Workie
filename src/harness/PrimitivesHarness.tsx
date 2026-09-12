@@ -1,6 +1,6 @@
-import type { FormEvent } from "react";
 import { Button } from "../ui/Button";
 import { FileControl } from "../ui/FileControl";
+import { WorkieForm } from "../ui/WorkieForm";
 import { Panel } from "../ui/Panel";
 import { ContributionLegend, ProgressStatus } from "../ui/ProgressStatus";
 import { TaskCard } from "../ui/TaskCard";
@@ -18,9 +18,7 @@ const FIELD_CONTROLS = [
   "file",
 ] as const;
 
-function preventSubmit(event: FormEvent<HTMLFormElement>): void {
-  event.preventDefault();
-}
+function ignoreSubmit(): void {}
 
 function FieldChromeBoard({ theme }: { theme: "dark" | "light" }) {
   const invalidId = `${theme}-field-invalid`;
@@ -29,7 +27,10 @@ function FieldChromeBoard({ theme }: { theme: "dark" | "light" }) {
   return (
     <div className="primitives-field-chrome" data-concept="field-chrome">
       <h3 className="type-display-m">Field chrome</h3>
-      <form className="primitives-field-grid" onSubmit={preventSubmit}>
+      <WorkieForm
+        className="primitives-field-grid"
+        onValidSubmit={ignoreSubmit}
+      >
         <label className="type-body-m" htmlFor={`${theme}-field-text`}>
           Title
           <input
@@ -150,7 +151,7 @@ function FieldChromeBoard({ theme }: { theme: "dark" | "light" }) {
             Abandoned and Cancelled stay in this list.
           </p>
         </details>
-      </form>
+      </WorkieForm>
     </div>
   );
 }
