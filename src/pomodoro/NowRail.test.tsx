@@ -62,8 +62,21 @@ afterEach(async () => {
   );
 });
 
+async function waitUntil(assert: () => void): Promise<void> {
+  await vi.waitFor(
+    async () => {
+      await act(async () => {
+        await Promise.resolve();
+      });
+      assert();
+    },
+    { timeout: 3_000 },
+  );
+}
+
 describe("NowRail interaction [CURSOR-GOAL D.4 D.7 D.8]", () => {
-  const now = new Date(2026, 8, 12, 12, 0, 0, 0).getTime();
+  // Match handleStart/pause/resume, which stamp cycles with Date.now().
+  const now = Date.now();
   const focus = createTask({
     id: "focus-task",
     title: "Write tests",
@@ -82,7 +95,7 @@ describe("NowRail interaction [CURSOR-GOAL D.4 D.7 D.8]", () => {
   it("keeps Start unavailable until a task is chosen (invariant 4)", async () => {
     const db = openDb();
     const container = mount(createElement(NowRail, { now, tasks, plan, db }));
-    await vi.waitFor(() => {
+    await waitUntil(() => {
       expect(container.querySelector("#now-task")).toBeInstanceOf(
         HTMLSelectElement,
       );
@@ -103,7 +116,7 @@ describe("NowRail interaction [CURSOR-GOAL D.4 D.7 D.8]", () => {
       other: other.status,
     };
     const container = mount(createElement(NowRail, { now, tasks, plan, db }));
-    await vi.waitFor(() => {
+    await waitUntil(() => {
       expect(container.querySelector("#now-task")).toBeInstanceOf(
         HTMLSelectElement,
       );
@@ -121,21 +134,21 @@ describe("NowRail interaction [CURSOR-GOAL D.4 D.7 D.8]", () => {
     await act(async () => {
       primaryButton(container)?.click();
     });
-    await vi.waitFor(() => {
+    await waitUntil(() => {
       expect(primaryButton(container)?.textContent?.trim()).toBe(COPY.pause);
     });
 
     await act(async () => {
       primaryButton(container)?.click();
     });
-    await vi.waitFor(() => {
+    await waitUntil(() => {
       expect(primaryButton(container)?.textContent?.trim()).toBe(COPY.resume);
     });
 
     await act(async () => {
       primaryButton(container)?.click();
     });
-    await vi.waitFor(() => {
+    await waitUntil(() => {
       expect(primaryButton(container)?.textContent?.trim()).toBe(COPY.pause);
     });
 
