@@ -50,3 +50,14 @@ playwright/.auth
 *.njsproj
 *.sln
 *.sw?
+
+# Agent and spec material - kept local, never published
+docs/
+.agents/
+.claude/
+.cursor/
+LetsTalk/
+AGENTS.md
+CLAUDE.md
+CURSOR.md
+GPT.md
