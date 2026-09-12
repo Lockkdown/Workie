@@ -23,6 +23,7 @@ import {
 import { parseTaskDrag, readTaskDrag } from "../desk/taskDrag";
 import type { Task } from "../domain/types";
 import { workieDayKey } from "../domain/workieDay";
+import { newId } from "../id";
 import { Button } from "../ui/Button";
 import { TimeBlock } from "../ui/TimeBlock";
 import type { TaskStatus } from "../ui/types";
@@ -161,7 +162,7 @@ export function TimelineSurface({
       durationMs: DEFAULT_DURATION_MS,
       precedingAnchorId: place.precedingAnchorId,
       chainPosition: place.chainPosition,
-      id: crypto.randomUUID(),
+      id: newId(),
     });
   }
 
@@ -181,7 +182,7 @@ export function TimelineSurface({
         durationMs: DEFAULT_DURATION_MS,
         precedingAnchorId: slot.precedingAnchorId,
         chainPosition: slot.chainPosition,
-        id: crypto.randomUUID(),
+        id: newId(),
       });
       return;
     }
@@ -612,7 +613,7 @@ export function openScheduleDraftForTask(
     durationMs: DEFAULT_DURATION_MS,
     precedingAnchorId: place.precedingAnchorId,
     chainPosition: place.chainPosition,
-    id: crypto.randomUUID(),
+    id: newId(),
   };
 }
 
@@ -625,6 +626,6 @@ export function openScheduleDraftForReserve(plan: DayPlan): ScheduleDraft {
     durationMs: DEFAULT_DURATION_MS,
     precedingAnchorId: place.precedingAnchorId,
     chainPosition: place.chainPosition,
-    id: crypto.randomUUID(),
+    id: newId(),
   };
 }

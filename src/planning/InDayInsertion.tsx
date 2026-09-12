@@ -9,6 +9,7 @@ import type { WorkieDB } from "../db/schema";
 import { localUserSource } from "../desk/boardContract";
 import type { Task } from "../domain/types";
 import { isLiveStatus } from "../domain/types";
+import { newId } from "../id";
 import { parseWorkieDayStart } from "../domain/workieDay";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
@@ -49,7 +50,7 @@ export function InDayInsertion({
 
   function buildPreview(forTaskId: string): MutationPreview {
     const durationMs = durationMin * 60_000;
-    const id = crypto.randomUUID();
+    const id = newId();
     if (type === "fixed") {
       const startMs =
         parseWorkieDayStart(plan.day) + hour * 3_600_000 + minute * 60_000;
@@ -108,7 +109,7 @@ export function InDayInsertion({
       const next = applyRevision(
         planningDoc,
         preview.next,
-        crypto.randomUUID(),
+        newId(),
         Date.now(),
       );
       void savePlanningDocument(db, next);

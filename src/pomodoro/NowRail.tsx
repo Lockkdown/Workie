@@ -9,6 +9,7 @@ import type { WorkieDB } from "../db/schema";
 import type { Task } from "../domain/types";
 import { isLiveStatus } from "../domain/types";
 import { remainingMs } from "../domain/remainingTime";
+import { newId } from "../id";
 import { Button } from "../ui/Button";
 import { appDb } from "../shell/appDb";
 import { OfflineIcon } from "../timeline/icons";
@@ -290,9 +291,9 @@ export function NowRail({
       return;
     }
     const result = startCycle(cycles, prepared, Date.now(), {
-      cycleId: crypto.randomUUID(),
-      sessionId: crypto.randomUUID(),
-      segmentId: crypto.randomUUID(),
+      cycleId: newId(),
+      sessionId: newId(),
+      segmentId: newId(),
     });
     if (!result.ok) {
       return;
@@ -333,9 +334,7 @@ export function NowRail({
         ? {
             label: COPY.resume,
             onClick: () =>
-              void save(
-                resumePaused(unfinished, Date.now(), crypto.randomUUID()),
-              ),
+              void save(resumePaused(unfinished, Date.now(), newId())),
           }
         : unfinished?.state === "running"
           ? {
@@ -352,8 +351,8 @@ export function NowRail({
                       blockId: prepared.blockId,
                       now: Date.now(),
                       ids: {
-                        sessionId: crypto.randomUUID(),
-                        segmentId: crypto.randomUUID(),
+                        sessionId: newId(),
+                        segmentId: newId(),
                       },
                     }),
                   ),
@@ -467,12 +466,7 @@ export function NowRail({
                   size="primary"
                   onClick={() =>
                     void save(
-                      reconcile(
-                        unfinished,
-                        "focus",
-                        Date.now(),
-                        crypto.randomUUID(),
-                      ).cycle,
+                      reconcile(unfinished, "focus", Date.now(), newId()).cycle,
                     )
                   }
                 >
@@ -484,12 +478,7 @@ export function NowRail({
                   size="primary"
                   onClick={() =>
                     void save(
-                      reconcile(
-                        unfinished,
-                        "pause",
-                        Date.now(),
-                        crypto.randomUUID(),
-                      ).cycle,
+                      reconcile(unfinished, "pause", Date.now(), newId()).cycle,
                     )
                   }
                 >
@@ -504,7 +493,7 @@ export function NowRail({
                       unfinished,
                       "discard",
                       Date.now(),
-                      crypto.randomUUID(),
+                      newId(),
                     );
                     void save(result.cycle);
                     if (result.closeProvisionalDay) {
