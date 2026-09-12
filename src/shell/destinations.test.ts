@@ -72,8 +72,6 @@ describe("destinations", () => {
     expect(html).toContain('aria-current="page">Daily Desk<');
     expect(html).not.toContain('aria-current="page">Plan Tomorrow<');
     expect(html).not.toContain('aria-current="page">Reports<');
-    expect(html).toContain('data-testid="user-content"');
-    expect(html).toContain("Việc cần làm");
     expect(html).toContain('href="#main-content"');
     expect(html).toContain("Skip to main content");
   });

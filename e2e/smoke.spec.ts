@@ -79,11 +79,22 @@ test.describe("app shell smoke", () => {
   test("Inter renders a Vietnamese user string after fonts load", async ({
     page,
   }) => {
+    const title = "Họp với khách hàng";
     await page.goto("/");
+    await expect(
+      page.getByRole("heading", { name: "Daily Desk" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Open Task Board" }).click();
+    await page.getByRole("button", { name: "Create task" }).click();
+    await page.getByLabel("Title").fill(title);
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: "Create task" })
+      .click();
+    const taskTitle = page.locator(".ui-task-card-title", { hasText: title });
+    await expect(taskTitle).toHaveText(title);
     await page.evaluate(() => document.fonts.ready);
-    const userContent = page.getByTestId("user-content");
-    await expect(userContent).toHaveText("Việc cần làm");
-    await expect(userContent).toHaveCSS("font-family", /Inter/);
+    await expect(taskTitle).toHaveCSS("font-family", /Inter/);
   });
 });
 

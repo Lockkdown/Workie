@@ -219,9 +219,6 @@ export function DailyDesk({
         <h2 id="daily-desk-title" className="type-display-xl">
           Daily Desk
         </h2>
-        <p className="type-body-l" data-testid="user-content">
-          Việc cần làm
-        </p>
       </header>
       <div
         className="desk-modes"
