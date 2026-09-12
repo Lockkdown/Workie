@@ -13,9 +13,11 @@ import { appDb } from "./appDb";
 import {
   DEFAULT_THEME,
   applyThemeToDocument,
+  themeAttribute,
   type ThemeSetting,
 } from "./theme";
 import { saveThemeSetting } from "./themePersistence";
+import { ImportBoundary } from "../import/ImportBoundary";
 import { ThemeSettingControl } from "./ThemeSetting";
 
 export type ShellViewProps = {
@@ -46,6 +48,7 @@ export function ShellView({
           <h1 className="type-display-xl">Workie</h1>
           <AppNav destination={destination} onDestination={onDestination} />
           <ThemeSettingControl theme={theme} onTheme={onTheme} />
+          <ImportBoundary />
         </div>
       </header>
       <main className="app-main">
@@ -78,7 +81,17 @@ export function AppShell({ initialTheme = DEFAULT_THEME }: AppShellProps) {
   function handleTheme(next: ThemeSetting) {
     setTheme(next);
     applyThemeToDocument(next);
-    void saveThemeSetting(appDb, next);
+    if (typeof document !== "undefined") {
+      document.documentElement.removeAttribute("data-theme-persisted");
+    }
+    void saveThemeSetting(appDb, next).then(() => {
+      if (typeof document !== "undefined") {
+        document.documentElement.setAttribute(
+          "data-theme-persisted",
+          themeAttribute(next),
+        );
+      }
+    });
   }
 
   return (

@@ -57,6 +57,10 @@ test.describe("app shell smoke", () => {
     await expect(dark).toBeFocused();
     await page.keyboard.press("Space");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-theme-persisted",
+      "dark",
+    );
     await expect(dark).toBeFocused();
     await expect(
       page.getByRole("heading", { name: "Daily Desk" }),
@@ -107,6 +111,10 @@ test.describe("dark override ignores the OS", () => {
   }) => {
     await page.goto("/");
     await page.getByRole("radio", { name: "Dark" }).click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-theme-persisted",
+      "dark",
+    );
     const surface = await page.evaluate(() =>
       getComputedStyle(document.documentElement)
         .getPropertyValue("--color-surface-base")

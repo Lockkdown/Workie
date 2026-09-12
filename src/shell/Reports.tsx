@@ -1,11 +1,5 @@
-import { Panel } from "../ui/Panel";
+import { ReportsSurface } from "../reports/ReportsSurface";
 
 export function Reports() {
-  return (
-    <div className="reports-surface">
-      <Panel title="Reports" ornament="panel">
-        <p>No reports yet.</p>
-      </Panel>
-    </div>
-  );
+  return <ReportsSurface />;
 }

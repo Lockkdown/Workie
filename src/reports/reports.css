@@ -1,0 +1,63 @@
+.reports-surface {
+  display: grid;
+  gap: var(--space-structure-24);
+}
+
+.reports-toolbar,
+.reports-cards,
+.reports-legend,
+.reports-bars,
+.reports-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-8);
+}
+
+.reports-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 12px;
+  height: 96px;
+}
+
+.reports-bar-fill {
+  background: var(--color-border-strong);
+  min-height: 1px;
+}
+
+.reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.reports-cell {
+  min-width: 12px;
+  min-height: 12px;
+  border: var(--border-1) solid var(--color-border-quiet);
+}
+
+.reports-cell[data-level="0"] {
+  background: transparent;
+}
+
+.reports-cell[data-level="1"] {
+  background: color-mix(in srgb, var(--color-border-strong) 25%, transparent);
+}
+
+.reports-cell[data-level="2"] {
+  background: color-mix(in srgb, var(--color-border-strong) 45%, transparent);
+}
+
+.reports-cell[data-level="3"] {
+  background: color-mix(in srgb, var(--color-border-strong) 70%, transparent);
+}
+
+.reports-cell[data-level="4+"] {
+  background: var(--color-border-strong);
+}
+
+.reports-partial {
+  outline: var(--border-1) dashed var(--color-border-quiet);
+}

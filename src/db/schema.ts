@@ -37,6 +37,14 @@ export type PlanningDraftRecord = ScaffoldRecord & {
   revisionsJson?: string;
 };
 
+/** T11 review draft until success or discard [D101]. Scaffold rows still valid. */
+export type ImportReviewDraftRecord = ScaffoldRecord & {
+  envelopeJson?: string;
+  sourceName?: string;
+  sourceMark?: string;
+  itemsJson?: string;
+};
+
 /** T9 cycle row. Nested sessions live in `sessions` / `segments` [D35] [D96]. */
 export type PomodoroCycleRecord = ScaffoldRecord & {
   workieDay?: string;
@@ -85,7 +93,7 @@ export class WorkieDB extends Dexie {
   pomodoroCycles!: Table<PomodoroCycleRecord, string>;
   sessions!: Table<FocusSessionRecord, string>;
   segments!: Table<FocusSegmentRecord, string>;
-  importReviewDrafts!: Table<ScaffoldRecord, string>;
+  importReviewDrafts!: Table<ImportReviewDraftRecord, string>;
   settings!: Table<SettingRecord, string>;
 
   constructor(name = "workie") {
