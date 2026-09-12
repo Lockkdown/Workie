@@ -72,6 +72,7 @@ export type TimelineSurfaceProps = {
   onMarkRunning: (blockId: string | null) => void;
   seedDraft?: ScheduleDraft | null;
   initialSelectedId?: string | null;
+  unfinishedCycleStatus?: "awaiting reconciliation";
 };
 
 function taskStatus(
@@ -101,6 +102,7 @@ export function TimelineSurface({
   onMarkRunning,
   seedDraft = null,
   initialSelectedId = null,
+  unfinishedCycleStatus,
 }: TimelineSurfaceProps) {
   const axisRef = useRef<HTMLDivElement | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(
@@ -118,7 +120,10 @@ export function TimelineSurface({
   const titles = new Map(tasks.map((task) => [task.id, task.title]));
   const overload = evaluateOverload(plan);
   const fiveMin = warnBeforeEndOfRunning(plan, now);
-  const close: CalendarDayClose = evaluateCalendarDayClose(now, { plan });
+  const close: CalendarDayClose = evaluateCalendarDayClose(now, {
+    plan,
+    unfinishedCycleStatus,
+  });
   const hours = hourLabels();
   const selected = plan.blocks.find((block) => block.id === selectedId);
   const showNow = workieDayKey(now) === plan.day;

@@ -1,0 +1,57 @@
+.now-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  min-width: 0;
+}
+
+.now-rail label,
+.now-rail select,
+.now-rail input {
+  display: block;
+  width: 100%;
+  font: inherit;
+}
+
+.now-timer {
+  margin: 0;
+}
+
+.now-flourish[data-active="true"] {
+  animation: now-peak 600ms ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .now-flourish {
+    animation: none;
+  }
+}
+
+@keyframes now-peak {
+  0% {
+    filter: brightness(1);
+  }
+  40% {
+    filter: brightness(1.25);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.now-banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+}
+
+.now-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+}
+
+.now-skeleton {
+  min-height: 3rem;
+  background: var(--color-surface-raised);
+}

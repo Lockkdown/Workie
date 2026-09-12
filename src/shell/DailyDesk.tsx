@@ -3,9 +3,9 @@ import {
   type DayPlan,
   type MutationPreview,
   createDayPlan,
+  evaluateCalendarDayClose,
   packDay,
   setRunningBlock,
-  warnBeforeEndOfRunning,
 } from "../calendar/index";
 import {
   loadTaskState,
@@ -13,7 +13,23 @@ import {
 } from "../db/taskPersistence";
 import type { WorkieDB } from "../db/schema";
 import type { Task } from "../domain/types";
-import { workieDayKey } from "../domain/workieDay";
+import { isLiveStatus } from "../domain/types";
+import {
+  addLocalDays,
+  startOfWorkieDay,
+  workieDayKey,
+} from "../domain/workieDay";
+import { DayClosePrompt } from "../planning/DayClosePrompt";
+import { InDayInsertion } from "../planning/InDayInsertion";
+import {
+  loadPlanningDocument,
+  markDayCloseAsked,
+  saveCarryOverIds,
+  wasDayCloseAsked,
+} from "../planning/persist";
+import type { PlanningDocument } from "../planning/types";
+import { NowRail } from "../pomodoro/NowRail";
+import type { UnfinishedCycleState } from "../pomodoro/types";
 import { TaskBoard } from "../tasks/TaskBoard";
 import { Button } from "../ui/Button";
 import { DESK_MODES, type DeskMode } from "./destinations";
@@ -80,6 +96,12 @@ export function DailyDesk({
     Record<string, string>
   >({});
   const [reload, setReload] = useState(0);
+  const [cycleStatus, setCycleStatus] = useState<UnfinishedCycleState | null>(
+    null,
+  );
+  const [planningDoc, setPlanningDoc] = useState<PlanningDocument | null>(null);
+  const [askDayClose, setAskDayClose] = useState(false);
+  const [carryForce, setCarryForce] = useState(false);
   const online = useSyncExternalStore(
     subscribeOnline,
     onlineSnapshot,
@@ -110,15 +132,24 @@ export function DailyDesk({
           createdAt: lastOpenRow?.createdAt ?? nowMs,
           updatedAt: nowMs,
         });
-        const [taskState, dayPlan] = await Promise.all([
+        const previousDay = workieDayKey(
+          addLocalDays(startOfWorkieDay(nowMs), -1),
+        );
+        const [taskState, dayPlan, todayDoc, asked] = await Promise.all([
           loadTaskState(db),
           loadDayPlan(db, day),
+          loadPlanningDocument(db, day),
+          wasDayCloseAsked(db, previousDay),
         ]);
+        const crossed =
+          Number.isFinite(lastOpenMs) && workieDayKey(lastOpenMs) < day;
         if (cancelled) {
           return;
         }
         setTasks(taskState.tasks);
         setPlan(dayPlan);
+        setPlanningDoc(todayDoc);
+        setAskDayClose(crossed && !asked);
         setLoadState("ready");
         setErrorCause(null);
       } catch (error) {
@@ -169,7 +200,18 @@ export function DailyDesk({
   }
 
   const packed = packDay(plan);
-  const fiveMin = warnBeforeEndOfRunning(plan, now);
+  const close = evaluateCalendarDayClose(now, {
+    plan,
+    unfinishedCycleStatus:
+      cycleStatus === "awaiting reconciliation"
+        ? "awaiting reconciliation"
+        : undefined,
+  });
+  const unfinishedLive = tasks.filter((task) => isLiveStatus(task.status));
+  const showDayClose =
+    (close.previousDayClosed || carryForce) &&
+    askDayClose &&
+    unfinishedLive.length > 0;
 
   return (
     <section className="daily-desk" aria-labelledby="daily-desk-title">
@@ -233,6 +275,42 @@ export function DailyDesk({
                   setSeedDraft(openScheduleDraftForTask(plan, taskId))
                 }
               />
+              <InDayInsertion
+                plan={plan}
+                tasks={tasks}
+                db={db}
+                planningDoc={planningDoc}
+                onApply={(next) => {
+                  void applyPreview(next);
+                }}
+                onPlanningDoc={setPlanningDoc}
+              />
+              <DayClosePrompt
+                open={showDayClose}
+                unfinished={unfinishedLive}
+                onCarry={(ids) => {
+                  void (async () => {
+                    const day = workieDayKey(Date.now());
+                    await saveCarryOverIds(db, day, ids, Date.now());
+                    await markDayCloseAsked(
+                      db,
+                      close.previousWorkieDay,
+                      Date.now(),
+                    );
+                    setAskDayClose(false);
+                    setCarryForce(false);
+                  })();
+                }}
+                onSkip={() => {
+                  void markDayCloseAsked(
+                    db,
+                    close.previousWorkieDay,
+                    Date.now(),
+                  );
+                  setAskDayClose(false);
+                  setCarryForce(false);
+                }}
+              />
             </div>
           </div>
         </section>
@@ -264,6 +342,11 @@ export function DailyDesk({
               onMarkRunning={(blockId) => {
                 void markRunning(blockId);
               }}
+              unfinishedCycleStatus={
+                cycleStatus === "awaiting reconciliation"
+                  ? "awaiting reconciliation"
+                  : undefined
+              }
             />
           </div>
         </section>
@@ -275,15 +358,24 @@ export function DailyDesk({
         >
           <div className="ui-ornament-content">
             <h3 className="type-display-m">Now</h3>
-            {plan.runningBlockId === null ? (
-              <p className="type-body-m">Nothing running.</p>
-            ) : null}
-            <div data-primary-slot="daily-desk" />
-            {fiveMin ? (
-              <p className="type-body-s" data-five-minute="rail">
-                {COPY.fiveMinutes}
-              </p>
-            ) : null}
+            <NowRail
+              now={now}
+              tasks={tasks}
+              plan={plan}
+              db={db}
+              offline={!online}
+              onApplyCalendar={(next) => {
+                void applyPreview(next);
+              }}
+              onMarkRunning={(blockId) => {
+                void markRunning(blockId);
+              }}
+              onProvisionalDiscard={() => {
+                setCarryForce(true);
+                setAskDayClose(true);
+              }}
+              onUnfinishedState={setCycleStatus}
+            />
           </div>
         </section>
       </div>

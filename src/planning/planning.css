@@ -1,0 +1,78 @@
+.plan-ritual {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+  min-width: 0;
+}
+
+.plan-steps {
+  display: flex;
+  gap: var(--space-content-8);
+}
+
+.plan-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+}
+
+.plan-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  min-width: 0;
+}
+
+.plan-item label {
+  display: flex;
+  gap: var(--space-content-8);
+  align-items: flex-start;
+}
+
+.plan-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+}
+
+.plan-fields {
+  display: grid;
+  gap: var(--space-content-8);
+}
+
+.plan-fields input,
+.plan-fields select {
+  font: inherit;
+  width: 100%;
+}
+
+.plan-skeleton-group {
+  min-height: 4rem;
+  background: var(--color-surface-raised);
+}
+
+.plan-flourish[data-active="true"] {
+  animation: plan-peak 700ms ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-flourish {
+    animation: none;
+  }
+}
+
+@keyframes plan-peak {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.plan-keep {
+  margin-top: var(--space-content-12);
+}

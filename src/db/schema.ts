@@ -25,6 +25,45 @@ export type PersistedBlock = CalendarBlock & {
 /** v2–v4 scaffold rows remain valid until rewritten as calendar blocks. */
 export type BlockTableRecord = PersistedBlock | ScaffoldRecord;
 
+/** T8 draft / committed plan for one Workie day [D23] [D96]. */
+export type PlanningDraftRecord = ScaffoldRecord & {
+  day?: string;
+  commitState?: "draft" | "committed";
+  step?: number;
+  selectedJson?: string;
+  keepAnyway?: number;
+  planJson?: string;
+  ownersJson?: string;
+  revisionsJson?: string;
+};
+
+/** T9 cycle row. Nested sessions live in `sessions` / `segments` [D35] [D96]. */
+export type PomodoroCycleRecord = ScaffoldRecord & {
+  workieDay?: string;
+  budgetMs?: number;
+  state?: string;
+  outcome?: string | null;
+  startedAt?: number | null;
+  lastCertainAt?: number | null;
+  currentSessionId?: string | null;
+};
+
+export type FocusSessionRecord = ScaffoldRecord & {
+  cycleId?: string;
+  taskId?: string;
+  blockId?: string | null;
+  startedAt?: number;
+  endedAt?: number | null;
+  closeReason?: string | null;
+  workieDay?: string;
+};
+
+export type FocusSegmentRecord = ScaffoldRecord & {
+  sessionId?: string;
+  startedAt?: number;
+  endedAt?: number | null;
+};
+
 export const WORKIE_TABLES = [
   "tasks",
   "occurrences",
@@ -41,11 +80,11 @@ export class WorkieDB extends Dexie {
   tasks!: Table<Task, string>;
   occurrences!: Table<Occurrence, string>;
   blocks!: Table<BlockTableRecord, string>;
-  planningDrafts!: Table<ScaffoldRecord, string>;
+  planningDrafts!: Table<PlanningDraftRecord, string>;
   statusHistory!: Table<StatusHistoryEvent, string>;
-  pomodoroCycles!: Table<ScaffoldRecord, string>;
-  sessions!: Table<ScaffoldRecord, string>;
-  segments!: Table<ScaffoldRecord, string>;
+  pomodoroCycles!: Table<PomodoroCycleRecord, string>;
+  sessions!: Table<FocusSessionRecord, string>;
+  segments!: Table<FocusSegmentRecord, string>;
   importReviewDrafts!: Table<ScaffoldRecord, string>;
   settings!: Table<SettingRecord, string>;
 
