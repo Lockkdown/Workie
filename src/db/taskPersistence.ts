@@ -5,6 +5,7 @@ import {
   ensureTomorrowOccurrences,
 } from "../domain/recurrence";
 import { createTask } from "../domain/taskModel";
+import { newId } from "../id";
 import type {
   CreateTaskInput,
   Occurrence,
@@ -48,7 +49,7 @@ export async function persistNewTask(
 ): Promise<{ task: Task; history: StatusHistoryEvent[] }> {
   const seeded = createTask({
     ...input,
-    id: input.id ?? crypto.randomUUID(),
+    id: input.id ?? newId(),
     now: input.now ?? Date.now(),
   });
   await persistTaskGraph(db, {
@@ -95,7 +96,7 @@ export async function persistEnsureTomorrowOccurrences(
     now,
     tasks,
     occurrences,
-    newId: () => crypto.randomUUID(),
+    newId,
   });
   if (seeded.length === 0) {
     return [];
@@ -119,7 +120,7 @@ export async function persistBackfillMissedOccurrences(
     lastOpen,
     tasks,
     occurrences,
-    newId: () => crypto.randomUUID(),
+    newId,
   });
   if (seeded.length === 0) {
     return [];

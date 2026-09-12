@@ -8,6 +8,7 @@ import {
   type JSX,
 } from "react";
 import type { Task } from "../domain/types";
+import { newId } from "../id";
 import { appDb } from "../shell/appDb";
 import { COPY } from "./copy";
 import {
@@ -179,7 +180,7 @@ export function ImportBoundary(): JSX.Element {
     setCommitting(true);
     const prepared = prepareImportBatch(session, {
       now: Date.now(),
-      newId: () => crypto.randomUUID(),
+      newId,
     });
     if (!prepared.ok) {
       savingEnabled.current = true;

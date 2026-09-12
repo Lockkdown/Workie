@@ -14,6 +14,7 @@ import type {
   Task,
   Weekday,
 } from "../domain/types";
+import { newId } from "../id";
 import type { BoardItem } from "./boardModel";
 import { collectChangedEntities } from "./boardModel";
 
@@ -50,7 +51,7 @@ export async function persistCreatedTask(
     .map((item) => item.title.trim())
     .filter((title) => title.length > 0)
     .map((title) => ({
-      id: crypto.randomUUID(),
+      id: newId(),
       title,
       done: false,
     }));

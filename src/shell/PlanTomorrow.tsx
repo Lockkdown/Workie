@@ -11,6 +11,7 @@ import {
   persistEnsureTomorrowOccurrences,
 } from "../db/taskPersistence";
 import { tomorrowWorkieDay, workieDayKey } from "../domain/workieDay";
+import { newId } from "../id";
 import { appDb } from "./appDb";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
@@ -343,7 +344,7 @@ export function PlanTomorrow() {
                           const placed = placeFixed({
                             doc: current,
                             item,
-                            blockId: crypto.randomUUID(),
+                            blockId: newId(),
                             startHour,
                             startMinute,
                             durationMs: durationMin * 60_000,
@@ -413,7 +414,7 @@ export function PlanTomorrow() {
                           const placed = placeFlexible({
                             doc: current,
                             item,
-                            blockId: crypto.randomUUID(),
+                            blockId: newId(),
                             durationMs: durationMin * 60_000,
                             precedingAnchorId:
                               anchorId.length > 0 ? anchorId : null,
