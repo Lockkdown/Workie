@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { appDb } from "./shell/appDb";
+import { RootErrorState, rootErrorCause } from "./shell/RootErrorBoundary";
 import { DEFAULT_THEME, applyThemeToDocument } from "./shell/theme";
 import { loadThemeSetting } from "./shell/themePersistence";
 import "./styles/fonts.css";
@@ -16,11 +17,15 @@ if (!root) {
 }
 
 void (async () => {
-  const theme = await loadThemeSetting(appDb).catch(() => DEFAULT_THEME);
-  applyThemeToDocument(theme);
-  createRoot(root).render(
-    <StrictMode>
-      <App initialTheme={theme} />
-    </StrictMode>,
-  );
+  try {
+    const theme = await loadThemeSetting(appDb).catch(() => DEFAULT_THEME);
+    applyThemeToDocument(theme);
+    createRoot(root).render(
+      <StrictMode>
+        <App initialTheme={theme} />
+      </StrictMode>,
+    );
+  } catch (error) {
+    createRoot(root).render(<RootErrorState cause={rootErrorCause(error)} />);
+  }
 })();
