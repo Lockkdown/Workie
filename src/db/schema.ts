@@ -1,4 +1,5 @@
 import Dexie, { type Table } from "dexie";
+import type { CalendarBlock } from "../calendar/types";
 import type { Occurrence, StatusHistoryEvent, Task } from "../domain/types";
 
 export type ScaffoldRecord = {
@@ -13,6 +14,16 @@ export type SettingRecord = {
   createdAt: number;
   updatedAt: number;
 };
+
+/** Durable calendar block. Day extras live in `settings` as `dayPlan:${day}` [D96]. */
+export type PersistedBlock = CalendarBlock & {
+  createdAt: number;
+  updatedAt: number;
+  taskId?: string;
+};
+
+/** v2–v4 scaffold rows remain valid until rewritten as calendar blocks. */
+export type BlockTableRecord = PersistedBlock | ScaffoldRecord;
 
 export const WORKIE_TABLES = [
   "tasks",
@@ -29,7 +40,7 @@ export const WORKIE_TABLES = [
 export class WorkieDB extends Dexie {
   tasks!: Table<Task, string>;
   occurrences!: Table<Occurrence, string>;
-  blocks!: Table<ScaffoldRecord, string>;
+  blocks!: Table<BlockTableRecord, string>;
   planningDrafts!: Table<ScaffoldRecord, string>;
   statusHistory!: Table<StatusHistoryEvent, string>;
   pomodoroCycles!: Table<ScaffoldRecord, string>;
@@ -69,6 +80,9 @@ export class WorkieDB extends Dexie {
     });
     this.version(4).stores({
       settings: "id, createdAt, updatedAt",
+    });
+    this.version(5).stores({
+      blocks: "id, day, taskId, createdAt, updatedAt",
     });
   }
 }

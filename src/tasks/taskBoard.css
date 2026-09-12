@@ -1,0 +1,213 @@
+.task-board-layer {
+  position: fixed;
+  inset: var(--space-structure-16);
+  z-index: 20;
+  overflow: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .task-board-layer {
+    inset-inline-end: auto;
+    width: min(52rem, calc(100vw - 20rem));
+  }
+}
+
+.task-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-structure-16);
+  min-width: 0;
+}
+
+.task-board-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-content-8);
+}
+
+.task-board-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-structure-24);
+  min-width: 0;
+}
+
+.task-board-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  min-width: 0;
+}
+
+.task-board-column-title {
+  margin: 0;
+}
+
+.task-board-subgroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  min-width: 0;
+}
+
+.task-board-subgroup-title {
+  margin: 0;
+}
+
+.task-board-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-board-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+  min-width: 0;
+}
+
+.task-board-card[draggable="true"] {
+  cursor: grab;
+}
+
+.task-board-card:focus-visible,
+.task-board-form :is(input, textarea, button):focus-visible,
+.task-board-card-actions :focus-visible,
+.task-board details > summary:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.task-board-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-4) var(--space-content-8);
+  min-width: 0;
+}
+
+.task-board-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-4);
+}
+
+.task-board-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+}
+
+.task-board-offline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-content-8);
+}
+
+.task-board-offline-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+.task-board-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-content-8);
+}
+
+.task-board-motif {
+  width: 32px;
+  height: 32px;
+  background: var(--color-brand-mint);
+  clip-path: polygon(
+    var(--chamfer-4) 0,
+    calc(100% - var(--chamfer-4)) 0,
+    100% var(--chamfer-4),
+    100% calc(100% - var(--chamfer-4)),
+    calc(100% - var(--chamfer-4)) 100%,
+    var(--chamfer-4) 100%,
+    0 calc(100% - var(--chamfer-4)),
+    0 var(--chamfer-4)
+  );
+}
+
+.task-board-skeleton-card {
+  min-height: var(--target-primary);
+  background: var(--color-surface-raised);
+}
+
+.task-board-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+}
+
+.task-board-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+  min-width: 0;
+}
+
+.task-board-form-row > :is(input, textarea) {
+  min-height: var(--target-primary);
+  padding: var(--space-content-8);
+  color: var(--color-text-primary);
+  background: var(--color-surface-raised);
+  border: var(--border-1) solid var(--color-border-quiet);
+  font-family: var(--type-body-m-family);
+  font-size: var(--type-body-m-size);
+  line-height: var(--type-body-m-line);
+}
+
+.task-board-weekdays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-content-8);
+}
+
+.task-board-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-content-8);
+}
+
+.task-board-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-12);
+}
+
+.task-board-detail ul {
+  margin: 0;
+  padding-inline-start: var(--space-structure-16);
+}
+
+.task-board-error {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+}
+
+.task-board-partial {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-4);
+}
+
+@media (max-width: 1023px) {
+  .task-board-columns {
+    grid-template-columns: 1fr;
+    gap: var(--space-structure-16);
+  }
+}

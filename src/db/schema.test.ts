@@ -55,7 +55,7 @@ describe("WorkieDB schema", () => {
     const db = new WorkieDB(`schema-${crypto.randomUUID()}`);
     opened.push(db);
     await db.open();
-    expect(db.verno).toBe(4);
+    expect(db.verno).toBe(5);
     for (const table of WORKIE_TABLES) {
       expect(db.table(table).name).toBe(table);
       await db.table(table).add(recordFor(table));
@@ -71,7 +71,7 @@ describe("WorkieDB schema", () => {
     expect(await db.settings.count()).toBe(1);
   });
 
-  it("migrates a v1 database into v4 and keeps existing records", async () => {
+  it("migrates a v1 database into v5 and keeps existing records", async () => {
     const name = `migrate-${crypto.randomUUID()}`;
     const v1 = new Dexie(name);
     v1.version(1).stores({ tasks: "id" });
@@ -82,7 +82,7 @@ describe("WorkieDB schema", () => {
     const current = new WorkieDB(name);
     opened.push(current);
     await current.open();
-    expect(current.verno).toBe(4);
+    expect(current.verno).toBe(5);
     expect(await current.tasks.get("keep")).toEqual({
       id: "keep",
       createdAt: 10,
@@ -101,7 +101,7 @@ describe("WorkieDB schema", () => {
     expect(await current.occurrences.count()).toBe(1);
   });
 
-  it("migrates a v2 database into v4 and keeps existing records", async () => {
+  it("migrates a v2 database into v5 and keeps existing records", async () => {
     const name = `migrate-v2-${crypto.randomUUID()}`;
     const v2 = new Dexie(name);
     v2.version(1).stores({ tasks: "id" });
@@ -128,7 +128,7 @@ describe("WorkieDB schema", () => {
     const current = new WorkieDB(name);
     opened.push(current);
     await current.open();
-    expect(current.verno).toBe(4);
+    expect(current.verno).toBe(5);
     expect(await current.tasks.get("keep")).toEqual({
       id: "keep",
       createdAt: 10,
@@ -142,7 +142,7 @@ describe("WorkieDB schema", () => {
     expect(await current.settings.count()).toBe(0);
   });
 
-  it("migrates a v3 database into v4 and keeps existing records", async () => {
+  it("migrates a v3 database into v5 and keeps existing records", async () => {
     const name = `migrate-v3-${crypto.randomUUID()}`;
     const v3 = new Dexie(name);
     v3.version(1).stores({ tasks: "id" });
@@ -177,7 +177,7 @@ describe("WorkieDB schema", () => {
     const current = new WorkieDB(name);
     opened.push(current);
     await current.open();
-    expect(current.verno).toBe(4);
+    expect(current.verno).toBe(5);
     expect(await current.tasks.get("keep")).toEqual({
       id: "keep",
       createdAt: 10,
@@ -193,6 +193,74 @@ describe("WorkieDB schema", () => {
     expect(await current.settings.get("theme")).toEqual({
       id: "theme",
       value: "Dark",
+      createdAt: 20,
+      updatedAt: 20,
+    });
+  });
+
+  it("migrates a v4 database into v5 and keeps existing records", async () => {
+    const name = `migrate-v4-${crypto.randomUUID()}`;
+    const v4 = new Dexie(name);
+    v4.version(1).stores({ tasks: "id" });
+    v4.version(2).stores({
+      tasks: "id, createdAt, updatedAt",
+      occurrences: "id, createdAt, updatedAt",
+      blocks: "id, createdAt, updatedAt",
+      planningDrafts: "id, createdAt, updatedAt",
+      statusHistory: "id, createdAt, updatedAt",
+      pomodoroCycles: "id, createdAt, updatedAt",
+      sessions: "id, createdAt, updatedAt",
+      segments: "id, createdAt, updatedAt",
+      importReviewDrafts: "id, createdAt, updatedAt",
+    });
+    v4.version(3).stores({
+      tasks: "id, status, createdAt, updatedAt, *blockIds",
+      occurrences:
+        "id, taskId, date, [taskId+date], status, createdAt, updatedAt, *blockIds",
+      blocks: "id, createdAt, updatedAt",
+      planningDrafts: "id, createdAt, updatedAt",
+      statusHistory:
+        "id, entityId, entityKind, status, workieDay, [entityId+status+workieDay], createdAt, updatedAt",
+      pomodoroCycles: "id, createdAt, updatedAt",
+      sessions: "id, createdAt, updatedAt",
+      segments: "id, createdAt, updatedAt",
+      importReviewDrafts: "id, createdAt, updatedAt",
+    });
+    v4.version(4).stores({
+      settings: "id, createdAt, updatedAt",
+    });
+    await v4.open();
+    await v4.table("tasks").add({ id: "keep", createdAt: 10, updatedAt: 10 });
+    await v4.table("blocks").add({
+      id: "keep-block",
+      createdAt: 12,
+      updatedAt: 12,
+    });
+    await v4.table("settings").add({
+      id: "theme",
+      value: "Light",
+      createdAt: 20,
+      updatedAt: 20,
+    });
+    v4.close();
+
+    const current = new WorkieDB(name);
+    opened.push(current);
+    await current.open();
+    expect(current.verno).toBe(5);
+    expect(await current.tasks.get("keep")).toEqual({
+      id: "keep",
+      createdAt: 10,
+      updatedAt: 10,
+    });
+    expect(await current.blocks.get("keep-block")).toEqual({
+      id: "keep-block",
+      createdAt: 12,
+      updatedAt: 12,
+    });
+    expect(await current.settings.get("theme")).toEqual({
+      id: "theme",
+      value: "Light",
       createdAt: 20,
       updatedAt: 20,
     });
