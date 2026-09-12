@@ -54,12 +54,46 @@ import {
   saveFlag,
 } from "./persist";
 import type {
+  CycleState,
+  FocusSession,
   PomodoroCycle,
   PreparedContext,
   UnfinishedCycleState,
 } from "./types";
 import { DEFAULT_BUDGET_MS } from "./types";
 import "./now.css";
+
+const SESSION_DETAIL_STATES = [
+  "running",
+  "paused",
+  "awaiting reconciliation",
+] as const;
+
+/** Running, Paused, and Awaiting reconciliation name the current session [D102]. */
+export function showsSessionDetails(state: CycleState): boolean {
+  return (SESSION_DETAIL_STATES as readonly string[]).includes(state);
+}
+
+type NowSessionDetailsProps = {
+  session: FocusSession;
+  tasks: readonly Task[];
+};
+
+/** Display-only session identity. Does not select a task or edit the schedule [D102]. */
+export function NowSessionDetails({ session, tasks }: NowSessionDetailsProps) {
+  const title = tasks.find((task) => task.id === session.taskId)?.title ?? "";
+  const block = session.blockId ?? COPY.unscheduled;
+  return (
+    <div className="now-session" data-testid="now-session">
+      <p className="type-body-m">
+        {COPY.task} <span data-testid="now-session-task">{title}</span>
+      </p>
+      <p className="type-body-s">
+        {COPY.block} <span data-testid="now-session-block">{block}</span>
+      </p>
+    </div>
+  );
+}
 
 export type NowRailProps = {
   now: number;
@@ -440,6 +474,9 @@ export function NowRail({
       ) : null}
       {unfinished ? (
         <div className="now-flourish" data-active={flourish ? "true" : "false"}>
+          {showsSessionDetails(unfinished.state) && currentSession ? (
+            <NowSessionDetails session={currentSession} tasks={tasks} />
+          ) : null}
           <p className="type-timer now-timer" data-testid="pomodoro-timer">
             {formatRemaining(displayMs)}
           </p>

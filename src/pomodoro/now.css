@@ -17,6 +17,16 @@
   margin: 0;
 }
 
+.now-session {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-content-8);
+}
+
+.now-session p {
+  margin: 0;
+}
+
 .now-flourish[data-active="true"] {
   animation: now-peak 600ms ease-out 1;
 }
