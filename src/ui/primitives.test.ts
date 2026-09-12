@@ -232,6 +232,18 @@ describe("five primitives", () => {
     );
     expect(primitivesCss).toMatch(/\.ui-ornament[\s\S]*overflow:\s*visible/);
   });
+
+  it("enters panels at --duration-panel and buttons at micro hover, press, focus [D89]", () => {
+    expect(primitivesCss).toMatch(
+      /animation:\s*panel-enter var\(--duration-panel\) var\(--easing-move\) 1/,
+    );
+    expect(primitivesCss).toMatch(/\.ui-button:hover/);
+    expect(primitivesCss).toMatch(/\.ui-button:active/);
+    expect(primitivesCss).toMatch(
+      /filter var\(--duration-micro\) var\(--easing-move\)/,
+    );
+    expect(primitivesCss).not.toMatch(/\.ui-ritual\b/);
+  });
 });
 
 describe("button tiers [D88] [D109]", () => {

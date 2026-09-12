@@ -109,6 +109,9 @@ describe("field chrome concept [D103]", () => {
     expect(fieldChromeCss).toMatch(
       /outline-offset:\s*var\(--focus-outline-offset\)/,
     );
+    expect(fieldChromeCss).toMatch(
+      /outline-color var\(--duration-micro\) var\(--easing-move\)/,
+    );
   });
 
   it("marks invalid with aria-invalid styling, not colour alone", () => {

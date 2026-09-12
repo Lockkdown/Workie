@@ -71,6 +71,9 @@
   flex-direction: column;
   gap: var(--space-content-4);
   min-width: 0;
+  transition:
+    transform var(--duration-move) var(--easing-move),
+    opacity var(--duration-move) var(--easing-move);
 }
 
 .task-board-card[draggable="true"] {
@@ -199,10 +202,14 @@
 }
 
 .task-complete-flourish[data-active="true"] {
-  animation: task-complete-peak 600ms ease-out 1;
+  animation: task-complete-peak var(--duration-ritual) var(--easing-pixel) 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .task-board-card {
+    transition: opacity var(--duration-opacity) var(--easing-move);
+  }
+
   .task-complete-flourish {
     animation: none;
   }

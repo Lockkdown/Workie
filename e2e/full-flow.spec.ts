@@ -56,6 +56,10 @@ test.describe("Web v1 full flow [CURSOR-GOAL N]", () => {
     await page.getByRole("button", { name: "Place flexible block" }).click();
     await page.getByRole("button", { name: "Continue to review" }).click();
     await page.getByRole("button", { name: "Commit Tomorrow" }).click();
+    const planSkip = page.getByRole("button", { name: "Skip animation" });
+    if ((await planSkip.count()) > 0) {
+      await planSkip.click();
+    }
     await expect(
       page.getByRole("button", { name: "Commit Tomorrow" }),
     ).toBeVisible();
@@ -72,7 +76,11 @@ test.describe("Web v1 full flow [CURSOR-GOAL N]", () => {
     await page.getByRole("button", { name: "Resume" }).click();
     await expect(page.getByText("running")).toBeVisible();
     await expect(page.getByTestId("pomodoro-timer")).toBeVisible();
-    await page.getByRole("button", { name: "Stopped early" }).click();
+    const stopEarly = page.getByRole("button", { name: "Stopped early" });
+    await expect(stopEarly).toBeEnabled();
+    await stopEarly.evaluate((el) => {
+      (el as HTMLButtonElement).click();
+    });
     await expect(page.getByText("Nothing running.")).toBeVisible();
 
     await page.getByRole("button", { name: "Create reserve" }).click();

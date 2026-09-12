@@ -51,7 +51,7 @@
 }
 
 .plan-flourish[data-active="true"] {
-  animation: plan-peak 700ms ease-out 1;
+  animation: plan-peak var(--duration-ritual) var(--easing-pixel) 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -40,8 +40,8 @@
 
 .timeline-block--moved {
   transition:
-    top var(--duration-move) ease-out,
-    height var(--duration-move) ease-out;
+    top var(--duration-move) var(--easing-move, ease-out),
+    height var(--duration-move) var(--easing-move, ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -27,7 +27,7 @@
 }
 
 .now-flourish[data-active="true"] {
-  animation: now-peak 600ms ease-out 1;
+  animation: now-peak var(--duration-ritual) var(--easing-pixel) 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

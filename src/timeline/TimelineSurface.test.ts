@@ -329,6 +329,7 @@ describe("empty loading error offline markup [D91]", () => {
 describe("reduced-motion CSS [D89]", () => {
   it("moves blocks in 180ms and collapses under prefers-reduced-motion", () => {
     expect(css).toContain("--duration-move");
+    expect(css).toContain("--easing-move");
     expect(css).toContain("ease-out");
     expect(css).toContain("@media (prefers-reduced-motion: reduce)");
     expect(css).toContain("--duration-opacity");

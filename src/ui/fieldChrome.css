@@ -65,6 +65,9 @@ input[type="radio"] {
   border: 0;
   box-shadow: var(--elevation-offset) var(--color-border-strong);
   overflow: visible;
+  transition:
+    outline-color var(--duration-micro) var(--easing-move),
+    outline-offset var(--duration-micro) var(--easing-move);
 }
 
 .ui-field:not([type="radio"]),

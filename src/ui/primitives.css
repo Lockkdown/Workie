@@ -74,9 +74,13 @@
   line-height: var(--type-body-m-line);
   font-weight: var(--type-body-m-weight);
   cursor: pointer;
+  outline-offset: var(--focus-outline-offset);
   transition:
     color var(--duration-micro) var(--easing-move),
-    opacity var(--duration-opacity) var(--easing-move);
+    opacity var(--duration-opacity) var(--easing-move),
+    filter var(--duration-micro) var(--easing-move),
+    outline-color var(--duration-micro) var(--easing-move),
+    outline-offset var(--duration-micro) var(--easing-move);
 }
 
 .ui-button[data-size="primary"] {
@@ -113,6 +117,14 @@
   background: transparent;
   box-shadow: none;
   color: var(--color-text-primary);
+}
+
+.ui-button:hover {
+  filter: brightness(1.08);
+}
+
+.ui-button:active {
+  filter: brightness(0.92);
 }
 
 .ui-button:focus-visible {
@@ -297,6 +309,19 @@
   );
 }
 
+.ui-panel {
+  animation: panel-enter var(--duration-panel) var(--easing-move) 1;
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .ui-panel h2 {
   margin: 0 0 var(--space-content-8);
   color: var(--color-text-primary);
@@ -373,7 +398,13 @@
   --_swatch: var(--color-contribution-4plus);
 }
 
-.ui-ritual {
-  animation-duration: var(--duration-ritual);
-  animation-timing-function: var(--easing-pixel);
+@media (prefers-reduced-motion: reduce) {
+  .ui-button:hover,
+  .ui-button:active {
+    filter: none;
+  }
+
+  .ui-panel {
+    animation: panel-enter var(--duration-opacity) var(--easing-move) 1;
+  }
 }

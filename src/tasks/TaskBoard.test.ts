@@ -264,6 +264,16 @@ describe("system states [D91]", () => {
     expect(html).toContain("task-complete-flourish");
     expect(css).toContain("@media (prefers-reduced-motion: reduce)");
     expect(css).toContain("task-complete-peak");
+    expect(css).toContain("--duration-ritual");
+    expect(css).toContain("--easing-pixel");
+    expect(css).not.toMatch(/700ms/);
+  });
+
+  it("moves a card at the move token [D14] [D89]", () => {
+    expect(css).toMatch(
+      /\.task-board-card\s*\{[^}]*transform var\(--duration-move\) var\(--easing-move\)/,
+    );
+    expect(css).toContain("--duration-opacity");
   });
 
   it("shows partial failure on the affected card only", () => {
