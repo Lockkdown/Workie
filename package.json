@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run",
-    "test:e2e": "playwright test",
+    "playwright:install": "playwright install chromium firefox webkit",
+    "test:e2e": "npm run playwright:install && playwright test",
     "lint": "eslint .",
     "format:check": "prettier --check src e2e eslint-rules index.html vite.config.ts playwright.config.ts vitest.setup.ts eslint.config.js prettier.config.js tsconfig.json tsconfig.app.json tsconfig.node.json package.json"
   },
