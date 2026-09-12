@@ -103,13 +103,15 @@
 
 .ui-button[data-variant="secondary"] {
   --_surface: var(--color-surface-raised);
-  --_border: var(--color-border-strong);
+  --_border: var(--field-chrome-border);
   color: var(--color-text-primary);
 }
 
-.ui-button[data-variant="destructive"] {
-  --_surface: var(--color-surface-raised);
-  --_border: var(--color-status-conflict);
+.ui-button[data-variant="quiet"] {
+  padding: var(--space-content-8) var(--space-content-12);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   color: var(--color-text-primary);
 }
 

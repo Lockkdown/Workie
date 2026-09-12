@@ -111,6 +111,24 @@ test.describe("field chrome harness [D92] [D103] [D105] [D106] [D107]", () => {
       for (const control of CONTROLS) {
         const node = chrome.locator(`[data-control="${control}"]`).first();
         await expect(node).toBeVisible();
+        if (control === "file") {
+          // T15 moved the visible trigger to a secondary button [D109].
+          // Field chrome no longer wraps this control; the secondary edge
+          // still exposes --field-chrome-border for the D108 measurement.
+          await expect(node).toHaveAttribute("data-variant", "secondary");
+          await expect(node).not.toHaveClass(/ui-field/);
+          const fileBox = await node.evaluate((el) => {
+            const rect = (el as HTMLElement).getBoundingClientRect();
+            const styles = getComputedStyle(el);
+            return {
+              height: rect.height,
+              edge: styles.getPropertyValue("--field-chrome-border").trim(),
+            };
+          });
+          expect(fileBox.height).toBeGreaterThanOrEqual(44);
+          expect(fileBox.edge.length).toBeGreaterThan(0);
+          continue;
+        }
         const metrics = await node.evaluate((el) => {
           const styles = getComputedStyle(el);
           return {
@@ -308,6 +326,142 @@ test.describe("field chrome harness [D92] [D103] [D105] [D106] [D107]", () => {
       }
     }
   });
+
+  test("every control edge clears 3:1 against the surface behind it [D108]", async ({
+    page,
+  }) => {
+    await page.goto("/harness.html");
+    const rows: Array<{
+      theme: string;
+      control: string;
+      edge: string;
+      surface: string;
+      ratio: number;
+    }> = [];
+
+    for (const theme of THEMES) {
+      const chrome = page.locator(
+        `[data-surface="theme-board"][data-theme="${theme}"] [data-concept="field-chrome"]`,
+      );
+      for (const control of CONTROLS) {
+        const node = chrome.locator(`[data-control="${control}"]`).first();
+        const measured = await node.evaluate((el) => {
+          const styles = getComputedStyle(el);
+          const resolve = (name: string): string => {
+            let value = styles.getPropertyValue(name).trim();
+            if (value.startsWith("var(")) {
+              const inner = value.slice(
+                4,
+                value.endsWith(")") ? -1 : undefined,
+              );
+              value = styles
+                .getPropertyValue(inner.split(",")[0]?.trim() ?? "")
+                .trim();
+            }
+            return value;
+          };
+          const edge = resolve("--field-chrome-border");
+          const quiet = resolve("--color-border-quiet");
+          let surface = "";
+          let ancestor: HTMLElement | null = el.parentElement;
+          while (ancestor) {
+            const bg = getComputedStyle(ancestor).backgroundColor;
+            const match = bg.match(
+              /rgba?\(\s*([\d.]+)(?:\s*,\s*|\s+)([\d.]+)(?:\s*,\s*|\s+)([\d.]+)(?:\s*,\s*|\s*\/\s*|\s*,\s*)?([\d.]*)/,
+            );
+            const alpha =
+              match?.[4] === "" || match?.[4] === undefined
+                ? 1
+                : Number.parseFloat(match[4] ?? "1");
+            if (match && alpha > 0 && bg !== "transparent") {
+              surface = bg;
+              break;
+            }
+            ancestor = ancestor.parentElement;
+          }
+          return { edge, surface, quiet };
+        });
+        const ratio = contrastRatio(measured.edge, measured.surface);
+        rows.push({
+          theme,
+          control,
+          edge: normalizeColor(measured.edge),
+          surface: normalizeColor(measured.surface),
+          ratio,
+        });
+        expect(
+          ratio,
+          `${theme} ${control}: ${normalizeColor(measured.edge)} on ${normalizeColor(measured.surface)} = ${ratio.toFixed(2)}:1`,
+        ).toBeGreaterThanOrEqual(3);
+        expect(normalizeColor(measured.edge)).not.toBe(
+          normalizeColor(measured.quiet),
+        );
+      }
+    }
+
+    console.log(
+      "D108 control-edge ratios\n" +
+        rows
+          .map(
+            (row) =>
+              `${row.theme.padEnd(5)} ${row.control.padEnd(9)} ${row.edge} on ${row.surface} = ${row.ratio.toFixed(2)}:1`,
+          )
+          .join("\n"),
+    );
+  });
+
+  test("radio is round, checkbox is square, one size per group [D111]", async ({
+    page,
+  }) => {
+    await page.goto("/harness.html");
+    for (const theme of THEMES) {
+      const chrome = page.locator(
+        `[data-surface="theme-board"][data-theme="${theme}"] [data-concept="field-chrome"]`,
+      );
+      const checkbox = chrome.locator('[data-control="checkbox"]').first();
+      const radio = chrome.locator('[data-control="radio"]').first();
+      const checkboxBox = await checkbox.evaluate((el) => {
+        const styles = getComputedStyle(el);
+        const rect = (el as HTMLElement).getBoundingClientRect();
+        return {
+          radius: parseFloat(styles.borderTopLeftRadius),
+          image: styles.backgroundImage,
+          width: rect.width,
+          height: rect.height,
+        };
+      });
+      const radioBox = await radio.evaluate((el) => {
+        const styles = getComputedStyle(el);
+        const rect = (el as HTMLElement).getBoundingClientRect();
+        return {
+          radius: parseFloat(styles.borderTopLeftRadius),
+          image: styles.backgroundImage,
+          width: rect.width,
+          height: rect.height,
+        };
+      });
+      expect(checkboxBox.radius).toBe(0);
+      expect(checkboxBox.image).toMatch(/linear-gradient/);
+      expect(checkboxBox.image).not.toMatch(/radial-gradient/);
+      expect(radioBox.image).toMatch(/radial-gradient/);
+      expect(radioBox.image).toMatch(/circle/);
+      expect(radioBox.width).toBeCloseTo(radioBox.height, 0);
+      const group = await chrome
+        .locator('input[type="radio"]')
+        .evaluateAll((nodes) =>
+          nodes.map((el) => {
+            const rect = (el as HTMLElement).getBoundingClientRect();
+            return { width: rect.width, height: rect.height };
+          }),
+        );
+      expect(group.length).toBeGreaterThan(1);
+      for (const box of group) {
+        expect(box.width).toBeCloseTo(group[0]?.width ?? 0, 0);
+        expect(box.height).toBeCloseTo(group[0]?.height ?? 0, 0);
+      }
+      expect(checkboxBox.width).toBeCloseTo(radioBox.width, 0);
+    }
+  });
 });
 
 test.describe("product container chrome [D103] [D105] [D107]", () => {
@@ -344,6 +498,26 @@ test.describe("product container chrome [D103] [D105] [D107]", () => {
     expect(chrome.appearance).toBe("none");
     expect(chrome.height).toBeGreaterThanOrEqual(44);
     expect(chrome.width).toBeGreaterThanOrEqual(44);
+    const radios = await fieldset
+      .locator('input[type="radio"]')
+      .evaluateAll((nodes) =>
+        nodes.map((el) => {
+          const styles = getComputedStyle(el);
+          const rect = (el as HTMLElement).getBoundingClientRect();
+          return {
+            image: styles.backgroundImage,
+            width: rect.width,
+            height: rect.height,
+          };
+        }),
+      );
+    expect(radios.length).toBe(3);
+    for (const box of radios) {
+      expect(box.image).toMatch(/radial-gradient/);
+      expect(box.image).toMatch(/circle/);
+      expect(box.width).toBeCloseTo(radios[0]?.width ?? 0, 0);
+      expect(box.height).toBeCloseTo(radios[0]?.height ?? 0, 0);
+    }
   });
 
   test("timeline scroll uses token scrollbar-color and default width", async ({

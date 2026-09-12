@@ -111,7 +111,7 @@
   --color-focus: var(--color-text-primary);
   --field-chrome-accent: var(--color-text-primary);
   --field-chrome-surface: var(--color-surface-raised);
-  --field-chrome-border: var(--color-border-quiet);
+  --field-chrome-border: #7a6b9c;
   --field-chrome-placeholder: var(--color-text-secondary);
   --field-chrome-mark: var(--color-text-secondary);
   --field-chrome-scrollbar-thumb: var(--color-text-secondary);
@@ -144,7 +144,7 @@
   --color-focus: var(--color-text-primary);
   --field-chrome-accent: var(--color-text-primary);
   --field-chrome-surface: var(--color-surface-raised);
-  --field-chrome-border: var(--color-border-quiet);
+  --field-chrome-border: #8d7cab;
   --field-chrome-placeholder: var(--color-text-secondary);
   --field-chrome-mark: var(--color-text-secondary);
   --field-chrome-scrollbar-thumb: var(--color-text-secondary);
@@ -178,7 +178,7 @@
     --color-focus: var(--color-text-primary);
     --field-chrome-accent: var(--color-text-primary);
     --field-chrome-surface: var(--color-surface-raised);
-    --field-chrome-border: var(--color-border-quiet);
+    --field-chrome-border: #8d7cab;
     --field-chrome-placeholder: var(--color-text-secondary);
     --field-chrome-mark: var(--color-text-secondary);
     --field-chrome-scrollbar-thumb: var(--color-text-secondary);

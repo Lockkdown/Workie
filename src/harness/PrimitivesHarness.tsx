@@ -172,7 +172,7 @@ function ThemeBoard({ theme }: { theme: "dark" | "light" }) {
         <Button variant="secondary" size="compact" ornament="dense">
           Edit
         </Button>
-        <Button variant="destructive" size="compact" ornament="dense">
+        <Button variant="quiet" size="compact">
           Cancel
         </Button>
       </div>

@@ -11,7 +11,7 @@ export function ThemeSettingControl({
 }: ThemeSettingControlProps) {
   return (
     <fieldset className="theme-setting">
-      <legend className="type-display-m">Theme</legend>
+      <legend className="type-body-m">Theme</legend>
       <div className="theme-options">
         {THEME_SETTINGS.map((name) => (
           <label key={name} className="theme-option type-body-m">

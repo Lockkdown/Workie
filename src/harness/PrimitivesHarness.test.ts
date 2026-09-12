@@ -59,6 +59,21 @@ describe("primitives harness", () => {
     }
   });
 
+  it("gives the file trigger a secondary tier and never a fourth variant [D109]", () => {
+    const html = renderToStaticMarkup(createElement(PrimitivesHarness));
+    expect(html).toContain('data-control="file"');
+    expect(html).toContain('data-variant="secondary"');
+    expect(html).toContain('data-variant="quiet"');
+    expect(html).not.toContain("ui-field");
+    expect(html).not.toContain('data-variant="destructive"');
+    const fileButton = html.match(
+      /<button[^>]*data-control="file"[^>]*>/,
+    )?.[0];
+    expect(fileButton).toBeDefined();
+    expect(fileButton).toContain('data-variant="secondary"');
+    expect(fileButton).not.toContain("ui-field");
+  });
+
   it("does not promise OS chrome looks or reads like Workie [D103] [D104]", () => {
     const html = renderToStaticMarkup(createElement(PrimitivesHarness));
     expect(html).not.toMatch(/open (dropdown|select|list).{0,40}Workie/i);

@@ -343,10 +343,19 @@ export function ConflictPanel({ plan, onPropose }: ConflictPanelProps) {
         <WorkieForm
           className="timeline-actions"
           onValidSubmit={(event) => {
-            const data = new FormData(event.currentTarget);
+            const submitter = (event.nativeEvent as SubmitEvent).submitter;
+            const data =
+              submitter instanceof HTMLElement
+                ? new FormData(event.currentTarget, submitter)
+                : new FormData(event.currentTarget);
             const durationMs = Number(data.get("duration")) * 60_000;
             const chainPosition = Number(data.get("order"));
-            const resolution = data.get("resolution") as ConflictResolution;
+            const resolution = (
+              submitter instanceof HTMLButtonElement &&
+              submitter.name === "resolution"
+                ? submitter.value
+                : data.get("resolution")
+            ) as ConflictResolution;
             run(resolution, { durationMs, chainPosition });
           }}
         >

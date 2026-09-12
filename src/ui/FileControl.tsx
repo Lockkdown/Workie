@@ -4,6 +4,7 @@ import {
   type ChangeEvent,
   type InputHTMLAttributes,
 } from "react";
+import { Button } from "./Button";
 import { COPY } from "./copy";
 import "./fileControl.css";
 
@@ -47,10 +48,13 @@ export function FileControl({
         aria-hidden="true"
         onChange={handleChange}
       />
-      <button
+      <Button
         type="button"
         id={triggerId}
-        className={["ui-field", className].filter(Boolean).join(" ")}
+        variant="secondary"
+        size="primary"
+        ornament="dense"
+        className={className}
         data-control={dataControl}
         aria-describedby={messageId}
         onClick={() => {
@@ -58,7 +62,7 @@ export function FileControl({
         }}
       >
         {COPY.chooseFile}
-      </button>
+      </Button>
       <p id={messageId} className="type-body-s" data-file-chosen="true">
         {chosen ?? COPY.noFileSelected}
       </p>

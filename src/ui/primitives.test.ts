@@ -5,6 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Button } from "./Button";
+import { FileControl } from "./FileControl";
 import { Panel } from "./Panel";
 import {
   CONTRIBUTION_LEVELS,
@@ -230,5 +231,62 @@ describe("five primitives", () => {
       /outline-offset:\s*var\(--focus-outline-offset\)/,
     );
     expect(primitivesCss).toMatch(/\.ui-ornament[\s\S]*overflow:\s*visible/);
+  });
+});
+
+describe("button tiers [D88] [D109]", () => {
+  it("exposes exactly primary, secondary, and quiet — never destructive or field chrome", () => {
+    const primary = render(
+      createElement(Button, { variant: "primary", children: "Confirm" }),
+    );
+    const secondary = render(
+      createElement(Button, { variant: "secondary", children: "Edit" }),
+    );
+    const quiet = render(
+      createElement(Button, { variant: "quiet", children: "Cancel" }),
+    );
+    expect(primary).toContain('data-variant="primary"');
+    expect(primary).toContain("ui-ornament");
+    expect(secondary).toContain('data-variant="secondary"');
+    expect(secondary).toContain("ui-ornament");
+    expect(quiet).toContain('data-variant="quiet"');
+    expect(quiet).not.toContain("ui-ornament");
+    expect(quiet).not.toContain("data-ornament");
+    expect(primary).not.toContain("ui-field");
+    expect(secondary).not.toContain("ui-field");
+    expect(quiet).not.toContain("ui-field");
+    expect(primitivesCss).toMatch(
+      /\.ui-button\[data-variant="secondary"\]\s*\{[^}]*--_border:\s*var\(--field-chrome-border\)/,
+    );
+    expect(primitivesCss).toMatch(/\.ui-button\[data-variant="quiet"\]/);
+    expect(primitivesCss).not.toMatch(/data-variant="destructive"/);
+    expect(primitivesCss).not.toMatch(/\[data-variant="destructive"\]/);
+  });
+
+  it("renders the file picker trigger as a secondary button, not field chrome", () => {
+    const html = render(
+      createElement(FileControl, {
+        id: "batch-file",
+        label: "Batch file",
+        "data-control": "file",
+      }),
+    );
+    expect(html).toContain('data-variant="secondary"');
+    expect(html).toContain('data-control="file"');
+    expect(html).toContain("Choose file");
+    expect(html).toContain("No file selected.");
+    expect(html).toContain("ui-file-native");
+    expect(html).not.toContain("ui-field");
+    expect(html).toContain('type="file"');
+  });
+
+  it("keeps quiet on the shared focus indicator and target-size tokens", () => {
+    expect(primitivesCss).toMatch(
+      /\.ui-button\[data-size="primary"\]\s*\{[^}]*min-height:\s*var\(--target-primary\)/,
+    );
+    expect(primitivesCss).toMatch(
+      /\.ui-button\[data-size="compact"\]\s*\{[^}]*min-height:\s*var\(--target-compact\)/,
+    );
+    expect(primitivesCss).toMatch(/\.ui-button:focus-visible/);
   });
 });

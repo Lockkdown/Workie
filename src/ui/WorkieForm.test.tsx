@@ -82,6 +82,35 @@ describe("WorkieForm [D92] [D104]", () => {
     expect((count as HTMLInputElement).step).toBe("5");
   });
 
+  it("preserves the submitter so named submit buttons still work", () => {
+    const onValid = vi.fn();
+    const container = mount(
+      <WorkieForm onValidSubmit={onValid}>
+        <button type="submit" name="resolution" value="keepConflict">
+          Keep
+        </button>
+        <button type="submit" name="resolution" value="unscheduleBlock">
+          Unschedule
+        </button>
+      </WorkieForm>,
+    );
+
+    act(() => {
+      container
+        .querySelector<HTMLButtonElement>('button[value="unscheduleBlock"]')
+        ?.click();
+    });
+
+    expect(onValid).toHaveBeenCalledTimes(1);
+    const event = onValid.mock.calls[0]?.[0] as {
+      nativeEvent: SubmitEvent;
+    };
+    expect(event.nativeEvent.submitter).toBeInstanceOf(HTMLButtonElement);
+    expect((event.nativeEvent.submitter as HTMLButtonElement).value).toBe(
+      "unscheduleBlock",
+    );
+  });
+
   it("swallows the native invalid event", () => {
     const container = mount(
       <WorkieForm onValidSubmit={() => undefined}>

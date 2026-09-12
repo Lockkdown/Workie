@@ -120,6 +120,35 @@ describe("field chrome concept [D103]", () => {
     expect(fieldChromeCss).toMatch(/cursor:\s*not-allowed/);
     expect(fieldChromeCss).toMatch(/--_fill:\s*var\(--color-surface-panel\)/);
   });
+
+  it("paints the control edge from field-chrome-border, not border-quiet [D108]", () => {
+    expect(fieldChromeCss).toContain("var(--field-chrome-border)");
+    expect(fieldChromeCss).toMatch(/--_stroke:\s*var\(--field-chrome-border\)/);
+  });
+
+  it("renders radio round, checkbox as a chamfered square, one box size per group [D111]", () => {
+    expect(fieldChromeCss).toMatch(
+      /input\[type="radio"\]\s*\{[^}]*border-radius:\s*50%/,
+    );
+    expect(fieldChromeCss).toMatch(
+      /input\[type="radio"\][\s\S]*radial-gradient\([\s\S]*circle/,
+    );
+    expect(fieldChromeCss).toMatch(
+      /input\[type="checkbox"\][\s\S]{0,80}--_tick-image/,
+    );
+    expect(fieldChromeCss).not.toMatch(
+      /input\[type="checkbox"\]\s*\{[^}]*border-radius:\s*50%/,
+    );
+    const sharedSize = fieldChromeCss.match(
+      /input\[type="checkbox"\],\s*\ninput\[type="radio"\]\s*\{([^}]+)\}/g,
+    );
+    expect(sharedSize?.some((block) => block.includes("size-compact"))).toBe(
+      true,
+    );
+    expect(sharedSize?.some((block) => block.includes("size-touch"))).toBe(
+      false,
+    );
+  });
 });
 
 describe("container chrome [D105] [D106] [D107]", () => {

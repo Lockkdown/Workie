@@ -86,9 +86,11 @@ body {
   margin: 0;
   padding: var(--space-content-8) var(--space-content-12);
   min-height: var(--target-primary);
+  min-width: var(--target-primary);
   border: 0;
   border-left: var(--border-3) solid transparent;
   background: transparent;
+  box-shadow: none;
   color: var(--color-text-primary);
   text-align: left;
   overflow-wrap: anywhere;
@@ -171,16 +173,19 @@ body {
   padding: var(--space-content-8);
   min-height: var(--target-primary);
   min-width: var(--target-primary);
-  border: var(--border-1) solid var(--color-border-quiet);
-  background: var(--color-surface-raised);
+  border: 0;
+  border-left: var(--border-3) solid transparent;
+  background: transparent;
+  box-shadow: none;
   color: var(--color-text-primary);
   overflow-wrap: anywhere;
   cursor: pointer;
 }
 
 .desk-mode[aria-checked="true"] {
-  border-color: var(--color-border-strong);
-  box-shadow: var(--elevation-offset) var(--color-border-strong);
+  border-left-color: var(--color-brand-mint);
+  background: var(--color-surface-raised);
+  box-shadow: none;
 }
 
 .desk-workspace {

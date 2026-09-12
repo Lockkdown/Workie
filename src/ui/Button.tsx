@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import type { OrnamentTier } from "./types";
 
-export type ButtonVariant = "primary" | "secondary" | "destructive";
+export type ButtonVariant = "primary" | "secondary" | "quiet";
 export type ButtonSize = "primary" | "compact";
 
 type ButtonProps = {
@@ -21,7 +21,8 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const resolvedSize = size ?? "primary";
-  const classes = ["ui-button", "ui-ornament", className]
+  const framed = variant !== "quiet";
+  const classes = ["ui-button", framed ? "ui-ornament" : undefined, className]
     .filter(Boolean)
     .join(" ");
 
@@ -30,11 +31,15 @@ export function Button({
       {...rest}
       type={type}
       className={classes}
-      data-ornament={ornament}
+      data-ornament={framed ? ornament : undefined}
       data-variant={variant}
       data-size={resolvedSize}
     >
-      <span className="ui-ornament-content">{children}</span>
+      {framed ? (
+        <span className="ui-ornament-content">{children}</span>
+      ) : (
+        children
+      )}
     </button>
   );
 }

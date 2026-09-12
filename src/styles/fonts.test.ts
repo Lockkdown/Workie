@@ -29,4 +29,19 @@ describe("font loading", () => {
     expect(fontsCss).toMatch(/font-display:\s*swap/);
     expect(fontsCss).toMatch(/size-adjust:/);
   });
+
+  it("declares no third font family [D77] [D80]", () => {
+    const faces = [
+      ...fontsCss.matchAll(/font-family:\s*"([^"]+)"/g),
+    ].map((match) => match[1]);
+    expect(faces.length).toBeGreaterThan(0);
+    for (const name of new Set(faces)) {
+      expect([
+        "Inter",
+        "Inter Fallback",
+        "Pixelify Sans",
+        "Pixelify Sans Fallback",
+      ]).toContain(name);
+    }
+  });
 });

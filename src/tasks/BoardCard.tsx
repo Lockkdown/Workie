@@ -193,7 +193,7 @@ export function BoardCard({
                 <summary className="type-body-s">{COPY.moreActions}</summary>
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="secondary"
                   size="compact"
                   ornament="dense"
                   onClick={() => handlers.onRequestAbandon(entityId)}
@@ -202,7 +202,7 @@ export function BoardCard({
                 </Button>
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="secondary"
                   size="compact"
                   ornament="dense"
                   onClick={() => handlers.onRequestCancel(entityId)}

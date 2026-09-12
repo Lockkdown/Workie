@@ -227,6 +227,22 @@ describe("F9 type, space, geometry, motion", () => {
     expect(token(tokensCss, "--type-display-xl-size")).toBe("32px");
     expect(token(tokensCss, "--type-display-xl-line")).toBe("36px");
     expect(token(tokensCss, "--type-timer-size")).toBe("48px");
+    const familyTokens = [
+      ...tokensCss.matchAll(/--type-([a-z0-9-]+)-family:\s*([^;]+);/g),
+    ];
+    expect(familyTokens.length).toBeGreaterThanOrEqual(8);
+    for (const [, role, value] of familyTokens) {
+      const mapped = value.trim().toLowerCase();
+      if (role.startsWith("display") || role === "timer") {
+        expect(mapped).toBe("var(--font-display)");
+      } else {
+        expect(mapped).toBe("var(--font-body)");
+      }
+    }
+    expect(tokensCss.match(/--font-[a-z]+:/g)).toEqual([
+      "--font-display:",
+      "--font-body:",
+    ]);
   });
 
   it("exposes content density and structural separation spacing", () => {
@@ -295,8 +311,11 @@ describe("F9 type, space, geometry, motion", () => {
     expect(token(tokensCss, "--field-chrome-surface")).toBe(
       "var(--color-surface-raised)",
     );
-    expect(token(tokensCss, "--field-chrome-border")).toBe(
-      "var(--color-border-quiet)",
+    expect(themeDecls('[data-theme="dark"]')["--field-chrome-border"]).toBe(
+      "#7a6b9c",
+    );
+    expect(themeDecls('[data-theme="light"]')["--field-chrome-border"]).toBe(
+      "#8d7cab",
     );
     expect(token(tokensCss, "--field-chrome-placeholder")).toBe(
       "var(--color-text-secondary)",
@@ -358,6 +377,68 @@ describe("contrast of intended token pairs", () => {
         LIGHT["--color-surface-raised"],
       ),
     ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("gives field-chrome-border 3:1 against the surface behind it in both themes [D92] [D108]", () => {
+    const darkEdge = "#7a6b9c";
+    const lightEdge = "#8d7cab";
+    const darkQuiet = contrastRatio(
+      DARK["--color-border-quiet"],
+      DARK["--color-surface-raised"],
+    );
+    const darkStrong = contrastRatio(
+      DARK["--color-border-strong"],
+      DARK["--color-surface-raised"],
+    );
+    const lightQuiet = contrastRatio(
+      LIGHT["--color-border-quiet"],
+      LIGHT["--color-surface-raised"],
+    );
+    const lightStrong = contrastRatio(
+      LIGHT["--color-border-strong"],
+      LIGHT["--color-surface-raised"],
+    );
+    expect(darkQuiet).toBeLessThan(3);
+    expect(darkStrong).toBeLessThan(3);
+    expect(lightQuiet).toBeLessThan(3);
+    expect(lightStrong).toBeLessThan(3);
+    expect(themeDecls('[data-theme="dark"]')["--field-chrome-border"]).not.toBe(
+      DARK["--color-border-quiet"],
+    );
+    expect(
+      themeDecls('[data-theme="light"]')["--field-chrome-border"],
+    ).not.toBe(LIGHT["--color-border-quiet"]);
+
+    const darkPairs = [
+      ["raised", DARK["--color-surface-raised"]],
+      ["base", DARK["--color-surface-base"]],
+      ["panel", DARK["--color-surface-panel"]],
+    ] as const;
+    const lightPairs = [
+      ["raised", LIGHT["--color-surface-raised"]],
+      ["base", LIGHT["--color-surface-base"]],
+      ["panel", LIGHT["--color-surface-panel"]],
+    ] as const;
+    for (const [name, surface] of darkPairs) {
+      const ratio = contrastRatio(darkEdge, surface);
+      expect(
+        ratio,
+        `dark edge on ${name} ${surface} = ${ratio.toFixed(2)}:1`,
+      ).toBeGreaterThanOrEqual(3);
+    }
+    for (const [name, surface] of lightPairs) {
+      const ratio = contrastRatio(lightEdge, surface);
+      expect(
+        ratio,
+        `light edge on ${name} ${surface} = ${ratio.toFixed(2)}:1`,
+      ).toBeGreaterThanOrEqual(3);
+    }
+    expect(
+      contrastRatio(darkEdge, DARK["--color-surface-raised"]).toFixed(2),
+    ).toBe("3.55");
+    expect(
+      contrastRatio(lightEdge, LIGHT["--color-surface-raised"]).toFixed(2),
+    ).toBe("3.75");
   });
 
   it("gives scrollbar thumb 3:1 against its track in both themes [D92] [D105]", () => {

@@ -15,6 +15,7 @@ export function AppNav({ destination, onDestination }: AppNavProps) {
             key={name}
             type="button"
             className="app-nav-item type-display-m"
+            data-variant="quiet"
             aria-current={current ? "page" : undefined}
             onClick={() => onDestination(name)}
           >

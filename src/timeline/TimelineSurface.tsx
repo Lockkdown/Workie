@@ -392,6 +392,7 @@ export function TimelineSurface({
                 <button
                   type="button"
                   className="timeline-edge"
+                  data-variant="quiet"
                   data-edge="start"
                   aria-label={COPY.resizeStart}
                   onPointerUp={(event) =>
@@ -401,6 +402,7 @@ export function TimelineSurface({
                 <button
                   type="button"
                   className="timeline-edge"
+                  data-variant="quiet"
                   data-edge="end"
                   aria-label={COPY.resizeEnd}
                   onPointerUp={(event) =>

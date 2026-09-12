@@ -171,12 +171,19 @@
   position: absolute;
   left: 0;
   right: 0;
-  height: 12px;
+  height: var(--target-compact);
+  min-height: var(--target-compact);
   z-index: 2;
   padding: 0;
   border: 0;
   background: transparent;
+  box-shadow: none;
   cursor: ns-resize;
+}
+
+.timeline-edge:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .timeline-edge[data-edge="start"] {

@@ -230,6 +230,7 @@ export function DailyDesk({
             key={name}
             type="button"
             className="desk-mode type-display-m"
+            data-variant="quiet"
             role="radio"
             aria-checked={mode === name}
             onClick={() => onMode(name)}
