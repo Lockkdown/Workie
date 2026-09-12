@@ -23,5 +23,11 @@ test.describe("Pomodoro Now rail", () => {
     await expect(page.getByTestId("pomodoro-timer")).toBeVisible();
     await expect(page.getByRole("button", { name: "Pause" })).toBeVisible();
     await expect(page.getByText("running")).toBeVisible();
+    await expect(page.getByTestId("now-session-task")).toHaveText(
+      "Write tests",
+    );
+    await expect(page.getByTestId("now-session-block")).toHaveText(
+      "Unscheduled",
+    );
   });
 });
