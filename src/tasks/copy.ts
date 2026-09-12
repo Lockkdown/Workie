@@ -29,6 +29,7 @@ export const COPY = {
   description: "Description",
   subtasks: "Subtasks",
   addSubtask: "Add subtask",
+  removeSubtask: "Remove subtask",
   sourceCreator: "Source / creator",
   currentAccount: "current account",
   formCancel: "Cancel",

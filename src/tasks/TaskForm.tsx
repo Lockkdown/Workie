@@ -114,21 +114,39 @@ export function TaskForm({
         <fieldset className="task-board-form-row">
           <legend className="type-body-m">{COPY.subtasks}</legend>
           {subtasks.map((item, index) => (
-            <input
+            <div
               key={`subtask-${String(index)}`}
-              className="type-body-m"
-              name={`subtask-${String(index)}`}
-              aria-label={`${COPY.subtasks} ${String(index + 1)}`}
-              value={item}
-              onChange={(event) => {
-                const value = event.target.value;
-                setSubtasks((current) =>
-                  current.map((entry, entryIndex) =>
-                    entryIndex === index ? value : entry,
-                  ),
-                );
-              }}
-            />
+              className="task-board-form-row"
+            >
+              <input
+                className="type-body-m"
+                name={`subtask-${String(index)}`}
+                aria-label={`${COPY.subtasks} ${String(index + 1)}`}
+                value={item}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setSubtasks((current) =>
+                    current.map((entry, entryIndex) =>
+                      entryIndex === index ? value : entry,
+                    ),
+                  );
+                }}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                size="compact"
+                ornament="dense"
+                aria-label={`${COPY.removeSubtask} ${String(index + 1)}`}
+                onClick={() =>
+                  setSubtasks((current) =>
+                    current.filter((_, entryIndex) => entryIndex !== index),
+                  )
+                }
+              >
+                {COPY.removeSubtask}
+              </Button>
+            </div>
           ))}
           <Button
             type="button"
